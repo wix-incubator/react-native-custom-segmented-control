@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		26751C3B1CE8C72E0006725F /* CustomSegmentedControlManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 26751C3A1CE8C72E0006725F /* CustomSegmentedControlManager.m */; };
-		26B414FC1CE9B00C00C51D8E /* CustumSegmentedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B414FB1CE9B00C00C51D8E /* CustumSegmentedButton.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -27,8 +26,6 @@
 		26751C0A1CE8BD5C0006725F /* libCustomSegmentedControl.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCustomSegmentedControl.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		26751C391CE8C72E0006725F /* CustomSegmentedControlManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomSegmentedControlManager.h; sourceTree = "<group>"; };
 		26751C3A1CE8C72E0006725F /* CustomSegmentedControlManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomSegmentedControlManager.m; sourceTree = "<group>"; };
-		26B414FA1CE9B00B00C51D8E /* CustumSegmentedButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustumSegmentedButton.h; sourceTree = "<group>"; };
-		26B414FB1CE9B00C00C51D8E /* CustumSegmentedButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustumSegmentedButton.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,8 +60,6 @@
 			children = (
 				26751C391CE8C72E0006725F /* CustomSegmentedControlManager.h */,
 				26751C3A1CE8C72E0006725F /* CustomSegmentedControlManager.m */,
-				26B414FA1CE9B00B00C51D8E /* CustumSegmentedButton.h */,
-				26B414FB1CE9B00C00C51D8E /* CustumSegmentedButton.m */,
 			);
 			path = CustomSegmentedControl;
 			sourceTree = "<group>";
@@ -126,7 +121,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				26751C3B1CE8C72E0006725F /* CustomSegmentedControlManager.m in Sources */,
-				26B414FC1CE9B00C00C51D8E /* CustumSegmentedButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -219,7 +213,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/../../react-native/React/**",
+					"$(SRCROOT)/../../../react-native/React/**",
 					"$(inherited)",
 				);
 				OTHER_LDFLAGS = "-ObjC";
@@ -232,7 +226,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/../../react-native/React/**",
+					"$(SRCROOT)/../../../react-native/React/**",
 					"$(inherited)",
 				);
 				OTHER_LDFLAGS = "-ObjC";

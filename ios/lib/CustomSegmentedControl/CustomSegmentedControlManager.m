@@ -98,7 +98,6 @@
         self.animationDuration = DEFAULT_ANIMATION_DURATION;
         self.lineSelectedHeight = DEFAULT_LINE_SELECTED_HEIGHT;
         self.segmentedFontSize = DEFAULT_FONT_SIZE;
-        self.segmentTextColor = 
     }
     
     return self;
