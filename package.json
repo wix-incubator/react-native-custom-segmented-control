@@ -7,7 +7,7 @@
     "type": "git",
     "url": "https://github.com/wix/react-native-custom-segmented-control"
   },
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Native iOS Custom segmented control for React Native",
   "nativePackage": true,
   "homepage": "https://github.com/wix/react-native-custom-segmented-control",
