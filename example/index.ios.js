@@ -26,22 +26,21 @@ class example extends Component {
 
         <CustomSegmentedControl style={{
                                         width: width,
-                                        height:40,
-                                        backgroundColor: 'transparent',
-                                        marginTop: 20
+                                        height:38,
+                                        backgroundColor: '#7BB0A6',
+                                        marginTop: 20,
                                         }}
                                 values={['ORDERS','HOTELS' ]}
-                                tintColor={"#ff0000"}
+                                tintColor={"black"}
                                 selected={0}
                                 segmentedStyle={{
-                                                 lineSelectedHeight: 1.5,
-                                                 fontSize:17,
-                                                 segmentBackgroundColor: 'purple',
-                                                 segmentTextColor: 'green',
+                                                 lineSelectedHeight: 1,
+                                                 fontSize:16,
+                                                 segmentBackgroundColor: 'transparent',
+                                                 segmentTextColor: 'black',
                                                  segmentFontFamily: 'Cochin'
                                                  }}
                                 animationDuration={0.2}
-
                                 onSelectedWillChange={(event)=> {
                                   //console.warn('will' + event.nativeEvent.selected);
                                 }}
@@ -51,10 +50,49 @@ class example extends Component {
 
         />
 
-        <CustomSegmentedControl style={{width: width, height:40, backgroundColor: 'white', marginTop: 40}}
+        <CustomSegmentedControl style={{width: width, height:40, backgroundColor: 'transparent', marginTop: 40, }}
+                                selected={2}
+                                segmentedStyle={{
+                                                 lineSelectedHeight: 1,
+                                                 fontSize:12,
+                                                 segmentBackgroundColor: 'transparent',
+                                                 segmentTextColor: 'black',
+                                                 segmentFontFamily: 'Cochin'
+                                                 }}
                                 values={['ORDERS','HOTELS', 'OPTIONS']}
                                 tintColor={"black"}
-                                lineSelectedHeight={1.5}/>
+                                />
+
+        <CustomSegmentedControl style={{width:width,
+                                        height:40,
+                                        backgroundColor: '#83D6DE',
+                                        //marginTop: 40,
+                                        borderRadius: 20,
+                                        margin:
+                                        }}
+                                selected={1}
+                                segmentedStyle={{
+                                                 lineSelectedHeight: 1,
+                                                 fontSize:12,
+                                                 segmentBackgroundColor: 'transparent',
+                                                 segmentTextColor: 'blue',
+                                                 segmentFontFamily: 'Cochin'
+                                                 }}
+                                values={['TOP FREE','TOP PAID', 'TOP GROSSING']}
+                                tintColor={"red"}
+        />
+
+        <CustomSegmentedControl style={{width: width, height:40, backgroundColor: '#3C3741', marginTop: 40 }}
+                                segmentedStyle={{
+                                                 lineSelectedHeight: 1,
+                                                 fontSize:12,
+                                                 segmentBackgroundColor: 'transparent',
+                                                 segmentTextColor: '#E0E4CC',
+                                                 segmentFontFamily: 'Cochin'
+                                                 }}
+                                values={['ORDERS','HOTELS', 'OPTIONS','TOP FREE','TOP PAID']}
+                                tintColor={"#E0E4CC"}
+        />
       </View>
     );
   }
