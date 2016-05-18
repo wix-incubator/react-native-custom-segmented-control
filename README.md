@@ -15,11 +15,7 @@ Native UI component for Segmneted Control with custom style
 
 - Drag the `CustomSegmentedControl.xcodeproj` project file into your project
 
-![]()
-
 - Add `libCustomSegmentedControl.a` to your target's **Linked Frameworks and Libraries**.
-
-![]()
 
 ## How To Use
 Require the native component:
