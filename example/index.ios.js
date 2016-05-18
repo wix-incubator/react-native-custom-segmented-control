@@ -68,7 +68,6 @@ class example extends Component {
                                         backgroundColor: '#83D6DE',
                                         //marginTop: 40,
                                         borderRadius: 20,
-                                        margin:
                                         }}
                                 selected={1}
                                 segmentedStyle={{
