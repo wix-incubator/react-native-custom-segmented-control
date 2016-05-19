@@ -1,5 +1,5 @@
 # react-native-custom-segmented-control
-Native UI component for Segmneted Control with custom style
+Native UI component for Segmented Control with custom style
 
 
 ## Installation
