@@ -24,8 +24,9 @@ class example extends Component {
       <View style={styles.container}>
         <View style={{ height: 300}}>
           <CustomSegmentedControl style={{
-                                          flex:1,
-                                          backgroundColor: 'green'
+                                          //flex:1,
+                                          height: 40,
+                                          backgroundColor: 'transparent'
                                           }}
                                   textValues={['ORDERS','HOTELS' ]}
                                   selected={0}
@@ -36,8 +37,8 @@ class example extends Component {
                                                    segmentTextColor: 'black',
                                                    segmentFontFamily: 'Cochin',
                                                    lineColor: 'black',
-                                                   alignSelectedLine: 'bottom', // top/bottom/text
-                                                   selectedLineMode: 'full' // full/ text
+                                                   selectedLineAlign: 'bottom', // top/bottom/text
+                                                   selectedLineMode: 'text' // full/text
                                                  }}
                                   animation={{
                                               duration: 0.4,
@@ -52,7 +53,7 @@ class example extends Component {
 
           />
 
-          <CustomSegmentedControl style={{flex: 1, backgroundColor: 'transparent'}}
+          <CustomSegmentedControl style={{flex: 1, backgroundColor: 'green'}}
                                   selected={2}
                                   segmentedStyle={{
                                          lineSelectedHeight: 1,
