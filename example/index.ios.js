@@ -24,8 +24,7 @@ class example extends Component {
       <View style={styles.container}>
         <View style={{ height: 300}}>
           <CustomSegmentedControl style={{
-                                          //flex:1,
-                                          height: 40,
+                                          flex:1,
                                           backgroundColor: 'transparent'
                                           }}
                                   textValues={['ORDERS','HOTELS' ]}
@@ -45,10 +44,8 @@ class example extends Component {
                                               damping: 0.6
                                               }}
                                   onSelectedWillChange={(event)=> {
-                                    //console.warn('will' + event.nativeEvent.selected);
                                   }}
                                   onSelectedDidChange={(event)=> {
-                                    //console.warn(111);
                                   }}
 
           />
