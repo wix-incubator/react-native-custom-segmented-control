@@ -24,20 +24,31 @@
 #define STYLE_SEGMENT_TEXT_COLOR                @"segmentTextColor"
 #define STYLE_LINE_COLOR                        @"lineColor"
 #define STYLE_SELECTED_LINE_ALIGN               @"alignSelectedLine"
+#define STYLE_SELECTED_LINE_MODE                @"selectedLineMode"
+#define STYLE_SELECTED_LINE_ALIGN               @"selectedLineAlign"
 
 #define ANIMATION_DAMPING                       @"damping"
 #define ANIMATION_DURATION                      @"duration"
 
 
-//@implementation RCTConvert(CustomSegmentedSelectedLine)
+@implementation RCTConvert(CustomSegmentedSelectedLineAlign)
 
-//RCT_ENUM_CONVERTER(CustomSegmentedSelectedLine, (@{
-//                                        @"top": @(CustomSegmentedSelectedLineAlignTop),
-//                                        @"bottom": @(CustomSegmentedSelectedLineAlignBottom),
-//                                        @"text": @(CustomSegmentedSelectedLineAlignText)
-//                                        }), CustomSegmentedSelectedLineAlignText, integerValue)
-//
-//@end
+RCT_ENUM_CONVERTER(CustomSegmentedSelectedLineAlign, (@{
+                                        @"top": @(CustomSegmentedSelectedLineAlignTop),
+                                        @"bottom": @(CustomSegmentedSelectedLineAlignBottom),
+                                        @"text": @(CustomSegmentedSelectedLineAlignText)
+                                        }), CustomSegmentedSelectedLineAlignText, integerValue)
+
+@end
+
+@implementation RCTConvert(CustomSegmentedSelectedLineMode)
+
+RCT_ENUM_CONVERTER(CustomSegmentedSelectedLineMode, (@{
+                                                        @"text": @(CustomSegmentedSelectedLineModeText),
+                                                        @"full": @(CustomSegmentedSelectedLineModeFull)
+                                                        }), CustomSegmentedSelectedLineModeText, integerValue)
+
+@end
 
 
 @interface CustomSegmentedControl : UIView
@@ -53,7 +64,8 @@
 @property (nonatomic, strong) UIColor *segmentBackgroundColor;
 @property (nonatomic, strong) UIColor *segmentTextColor;
 @property (nonatomic, strong) UIColor *lineColor;
-@property (nonatomic) BOOL stickToBottom;
+@property (nonatomic) CustomSegmentedSelectedLineAlign selectedLineAlign;
+@property (nonatomic) CustomSegmentedSelectedLineMode selectedLineMode;
 
 // animation
 @property (nonatomic) CGFloat animationDuration;
@@ -80,7 +92,6 @@
         self.lineSelectedHeight = [RCTConvert CGFloat:lineSelectedHeight];
     }
     
-    
     // STYLE_LINE_SELECTED_HEIGHT
     id fontSize = self.segmentedStyle[STYLE_FONT_SIZE];
     if (fontSize) {
@@ -105,11 +116,17 @@
         self.lineColor = [RCTConvert UIColor:lineColor];
     }
     
-//    // STYLE_LINE_STICK_TO_BOTTOM
-//    id stickToBottom = self.segmentedStyle[STYLE_LINE_STICK_TO_BOTTOM];
-//    if (stickToBottom) {
-//        self.stickToBottom = [RCTConvert BOOL:stickToBottom];
-//    }
+    // STYLE_LINE_STICK_TO_BOTTOM
+    id selectedLineAlign = self.segmentedStyle[STYLE_SELECTED_LINE_ALIGN];
+    if (selectedLineAlign) {
+        self.selectedLineAlign = [RCTConvert CustomSegmentedSelectedLineAlign:selectedLineAlign];
+    }
+    
+    // STYLE_LINE_STICK_TO_BOTTOM
+    id selectedLineMode = self.segmentedStyle[STYLE_SELECTED_LINE_MODE];
+    if (selectedLineMode) {
+        self.selectedLineMode = [RCTConvert CustomSegmentedSelectedLineMode:selectedLineMode];
+    }
 }
 
 
@@ -139,7 +156,8 @@
         self.lineSelectedHeight = DEFAULT_LINE_SELECTED_HEIGHT;
         self.segmentedFontSize = DEFAULT_FONT_SIZE;
         self.lineColor = DEFAULT_LINE_COLOR;
-        self.stickToBottom = NO;
+        self.selectedLineAlign = CustomSegmentedSelectedLineAlignText;
+        self.selectedLineMode = CustomSegmentedSelectedLineModeText;
         
         self.buttons = [[NSMutableArray alloc] init];
         self.lines = [[NSMutableArray alloc] init];
@@ -159,6 +177,7 @@
             
             CGFloat buttonX = buttonWidth * i;
             UIButton *btn = (self.buttons.count > i) ? self.buttons[i] : nil;
+            CGRect btnNewFrame = CGRectMake(buttonX, self.bounds.origin.y, buttonWidth, self.bounds.size.height);
             
             if (!btn ) {
                 btn = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -169,9 +188,9 @@
             if (!line) {
                 line = [[UIView alloc] init];
                 [self.lines addObject:line];
-            } else  {
-                btn.frame = CGRectMake(buttonX, self.bounds.origin.y, buttonWidth, self.bounds.size.height);
-                
+            }
+            else  {
+                btn.frame = btnNewFrame;
                 CGRect lineFrame = btn.frame;
                 CGSize btnTitleSize = [btn.titleLabel.text sizeWithFont:btn.titleLabel.font];
                 lineFrame.origin.x = btn.center.x - (lineFrame.size.width/2) ;
@@ -180,7 +199,7 @@
                 continue;
             }
             
-            btn.frame = CGRectMake(buttonX, self.bounds.origin.y, buttonWidth, self.bounds.size.height);
+            btn.frame = btnNewFrame;
             [btn setTitle:self.segmentedStrings[i] forState:UIControlStateNormal];
             [btn addTarget:self action:@selector(buttonSelected:) forControlEvents:UIControlEventTouchUpInside];
             [btn.titleLabel setFont:[UIFont systemFontOfSize:self.segmentedFontSize]];
@@ -189,12 +208,13 @@
             
             [self addSubview:btn];
             
-            CGRect lineFrame = btn.frame;
-            lineFrame.size.height = self.lineSelectedHeight;
-            CGSize btnTitleSize = [btn.titleLabel.text sizeWithFont:btn.titleLabel.font];
-            lineFrame.size.width = btnTitleSize.width + LINE_SELECTED_EXTRA_PADDING_WIDTH;
-            lineFrame.origin.x = btn.center.x - (lineFrame.size.width/2) ;
-            lineFrame.origin.y = btn.titleLabel.frame.origin.y + (btnTitleSize.height/2) + LINE_SELECTED_MARGIN_TOP;
+//            CGRect lineFrame = btn.frame;
+//            lineFrame.size.height = self.lineSelectedHeight;
+//            CGSize btnTitleSize = [btn.titleLabel.text sizeWithFont:btn.titleLabel.font];
+//            lineFrame.size.width = (self.selectedLineMode == CustomSegmentedSelectedLineModeText) ? btnTitleSize.width + LINE_SELECTED_EXTRA_PADDING_WIDTH : btn.bounds.size.width;
+//            lineFrame.origin.x = btn.center.x - (lineFrame.size.width/2) ;
+//            lineFrame.origin.y = btn.titleLabel.frame.origin.y + (btnTitleSize.height/2) + LINE_SELECTED_MARGIN_TOP;
+            CGRect lineFrame = [self lineFrameForbutton:btn];
             
             if (self.selectedItem != i) {
                 lineFrame.size.width = 0;
@@ -210,6 +230,32 @@
             [self bringSubviewToFront:line];
         }
     }
+}
+
+-(CGRect)lineFrameForbutton:(UIButton*)btn {
+    CGRect lineFrame = btn.frame;
+    lineFrame.size.height = self.lineSelectedHeight;
+    CGSize btnTitleSize = [btn.titleLabel.text sizeWithFont:btn.titleLabel.font];
+    lineFrame.size.width = (self.selectedLineMode == CustomSegmentedSelectedLineModeText) ? btnTitleSize.width + LINE_SELECTED_EXTRA_PADDING_WIDTH : btn.bounds.size.width;
+    lineFrame.origin.x = btn.center.x - (lineFrame.size.width/2) ;
+    
+    switch (self.selectedLineAlign) {
+        case CustomSegmentedSelectedLineAlignTop:
+            lineFrame.origin.y = 0;
+            break;
+            
+        case CustomSegmentedSelectedLineAlignText:
+            lineFrame.origin.y = btn.titleLabel.frame.origin.y + (btnTitleSize.height/2) + LINE_SELECTED_MARGIN_TOP;
+            break;
+            
+        case CustomSegmentedSelectedLineAlignBottom:
+            lineFrame.origin.y = btn.bounds.origin.y + btn.bounds.size.height - lineFrame.size.height;
+            break;
+        default:
+            break;
+    }
+
+    return lineFrame;
 }
 
 
@@ -235,7 +281,7 @@
         }
         else {
             CGSize btnTitleSize = [buttonPressed.titleLabel.text sizeWithFont:buttonPressed.titleLabel.font];
-            lineFrame.size.width = btnTitleSize.width;
+            lineFrame.size.width = (self.selectedLineMode == CustomSegmentedSelectedLineModeText) ? btnTitleSize.width + LINE_SELECTED_EXTRA_PADDING_WIDTH : buttonPressed.bounds.size.width;
         }
         
         line.center = CGPointMake(button.center.x, line.center.y);

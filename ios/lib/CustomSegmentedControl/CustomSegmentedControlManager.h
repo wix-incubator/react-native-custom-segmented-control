@@ -12,28 +12,28 @@
 
 
 
-//typedef NS_ENUM(NSInteger, CustomSegmentedSelectedLineAlign) {
-//    CustomSegmentedSelectedLineAlignTop,
-//    CustomSegmentedSelectedLineAlignBottom,
-//    CustomSegmentedSelectedLineAlignText
-//};
-//
-//typedef NS_ENUM(NSInteger, CustomSegmentedSelectedLineMode) {
-//    CustomSegmentedSelectedLineModeFull,
-//    CustomSegmentedSelectedLineModeText
-//};
-//
-//@interface RCTConvert(CustomSegmentedSelectedLineAlign)
-//
-//+ (CustomSegmentedSelectedLineAlign)CustomSegmentedSelectedLineAlign:(id)json;
-//
-//@end
-//
-//@interface RCTConvert(CustomSegmentedSelectedLineMode)
-//
-//+ (CustomSegmentedSelectedLineMode)CustomSegmentedSelectedLineMode:(id)json;
-//
-//@end
+typedef NS_ENUM(NSInteger, CustomSegmentedSelectedLineAlign) {
+    CustomSegmentedSelectedLineAlignTop,
+    CustomSegmentedSelectedLineAlignBottom,
+    CustomSegmentedSelectedLineAlignText
+};
+
+typedef NS_ENUM(NSInteger, CustomSegmentedSelectedLineMode) {
+    CustomSegmentedSelectedLineModeFull,
+    CustomSegmentedSelectedLineModeText
+};
+
+@interface RCTConvert(CustomSegmentedSelectedLineAlign)
+
++ (CustomSegmentedSelectedLineAlign)CustomSegmentedSelectedLineAlign:(id)json;
+
+@end
+
+@interface RCTConvert(CustomSegmentedSelectedLineMode)
+
++ (CustomSegmentedSelectedLineMode)CustomSegmentedSelectedLineMode:(id)json;
+
+@end
 
 @interface CustomSegmentedControlManager : RCTViewManager
 
