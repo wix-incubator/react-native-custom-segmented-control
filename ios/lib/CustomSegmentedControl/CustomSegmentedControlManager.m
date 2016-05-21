@@ -22,49 +22,63 @@
 #define STYLE_FONT_SIZE                         @"fontSize"
 #define STYLE_SEGMENT_BACKGROUND_COLOR          @"segmentBackgroundColor"
 #define STYLE_SEGMENT_TEXT_COLOR                @"segmentTextColor"
+#define STYLE_SEGMENT_FONT_FAMILY               @"segmentFontFamily"
 #define STYLE_LINE_COLOR                        @"lineColor"
 #define STYLE_SELECTED_LINE_ALIGN               @"alignSelectedLine"
+#define STYLE_SELECTED_LINE_MODE                @"selectedLineMode"
+#define STYLE_SELECTED_LINE_ALIGN               @"selectedLineAlign"
 
 #define ANIMATION_DAMPING                       @"damping"
 #define ANIMATION_DURATION                      @"duration"
 
 
-//@implementation RCTConvert(CustomSegmentedSelectedLine)
+@implementation RCTConvert(CustomSegmentedSelectedLineAlign)
 
-//RCT_ENUM_CONVERTER(CustomSegmentedSelectedLine, (@{
-//                                        @"top": @(CustomSegmentedSelectedLineAlignTop),
-//                                        @"bottom": @(CustomSegmentedSelectedLineAlignBottom),
-//                                        @"text": @(CustomSegmentedSelectedLineAlignText)
-//                                        }), CustomSegmentedSelectedLineAlignText, integerValue)
-//
-//@end
+RCT_ENUM_CONVERTER(CustomSegmentedSelectedLineAlign, (@{
+                                                        @"top": @(CustomSegmentedSelectedLineAlignTop),
+                                                        @"bottom": @(CustomSegmentedSelectedLineAlignBottom),
+                                                        @"text": @(CustomSegmentedSelectedLineAlignText)
+                                                        }), CustomSegmentedSelectedLineAlignText, integerValue)
+
+@end
+
+@implementation RCTConvert(CustomSegmentedSelectedLineMode)
+
+RCT_ENUM_CONVERTER(CustomSegmentedSelectedLineMode, (@{
+                                                       @"text": @(CustomSegmentedSelectedLineModeText),
+                                                       @"full": @(CustomSegmentedSelectedLineModeFull)
+                                                       }), CustomSegmentedSelectedLineModeText, integerValue)
+
+@end
 
 
 @interface CustomSegmentedControl : UIView
 
+// props
 @property (nonatomic, strong) NSArray<NSString*> *segmentedStrings;
 @property (nonatomic, strong) NSMutableArray<UIButton*> *buttons;
 @property (nonatomic, strong) NSMutableArray<UIView*> *lines;
 @property (nonatomic) NSInteger selectedItem;
+@property (nonatomic, strong) NSDictionary *segmentedStyle;
+@property (nonatomic, strong) NSDictionary *animation;
 
-// style
+// style props
 @property (nonatomic) CGFloat lineSelectedHeight;
 @property (nonatomic) CGFloat segmentedFontSize;
 @property (nonatomic, strong) UIColor *segmentBackgroundColor;
 @property (nonatomic, strong) UIColor *segmentTextColor;
+@property (nonatomic, strong) NSString *segmentFontFamilyName;
 @property (nonatomic, strong) UIColor *lineColor;
-@property (nonatomic) BOOL stickToBottom;
+@property (nonatomic) CustomSegmentedSelectedLineAlign selectedLineAlign;
+@property (nonatomic) CustomSegmentedSelectedLineMode selectedLineMode;
 
-// animation
+// animation props
 @property (nonatomic) CGFloat animationDuration;
 @property (nonatomic) CGFloat animationDamping;
 
-// callbacks
+// callbacks props
 @property (nonatomic, copy) RCTDirectEventBlock selectedWillChange;
 @property (nonatomic, copy) RCTDirectEventBlock selectedDidChange;
-
-@property (nonatomic, strong) NSDictionary *segmentedStyle;
-@property (nonatomic, strong) NSDictionary *animation;
 
 @end
 
@@ -79,7 +93,6 @@
     if (lineSelectedHeight) {
         self.lineSelectedHeight = [RCTConvert CGFloat:lineSelectedHeight];
     }
-    
     
     // STYLE_LINE_SELECTED_HEIGHT
     id fontSize = self.segmentedStyle[STYLE_FONT_SIZE];
@@ -99,17 +112,29 @@
         self.segmentTextColor = [RCTConvert UIColor:segmentTextColor];
     }
     
+    // STYLE_SEGMENT_FONT_FAMILY
+    id segmentFontFamily = self.segmentedStyle[STYLE_SEGMENT_FONT_FAMILY];
+    if (segmentFontFamily) {
+        self.segmentFontFamilyName = segmentFontFamily;
+    }
+    
     // STYLE_LINE_COLOR
     id lineColor = self.segmentedStyle[STYLE_LINE_COLOR];
     if (lineColor) {
         self.lineColor = [RCTConvert UIColor:lineColor];
     }
     
-//    // STYLE_LINE_STICK_TO_BOTTOM
-//    id stickToBottom = self.segmentedStyle[STYLE_LINE_STICK_TO_BOTTOM];
-//    if (stickToBottom) {
-//        self.stickToBottom = [RCTConvert BOOL:stickToBottom];
-//    }
+    // STYLE_LINE_STICK_TO_BOTTOM
+    id selectedLineAlign = self.segmentedStyle[STYLE_SELECTED_LINE_ALIGN];
+    if (selectedLineAlign) {
+        self.selectedLineAlign = [RCTConvert CustomSegmentedSelectedLineAlign:selectedLineAlign];
+    }
+    
+    // STYLE_LINE_STICK_TO_BOTTOM
+    id selectedLineMode = self.segmentedStyle[STYLE_SELECTED_LINE_MODE];
+    if (selectedLineMode) {
+        self.selectedLineMode = [RCTConvert CustomSegmentedSelectedLineMode:selectedLineMode];
+    }
 }
 
 
@@ -139,7 +164,8 @@
         self.lineSelectedHeight = DEFAULT_LINE_SELECTED_HEIGHT;
         self.segmentedFontSize = DEFAULT_FONT_SIZE;
         self.lineColor = DEFAULT_LINE_COLOR;
-        self.stickToBottom = NO;
+        self.selectedLineAlign = CustomSegmentedSelectedLineAlignText;
+        self.selectedLineMode = CustomSegmentedSelectedLineModeText;
         
         self.buttons = [[NSMutableArray alloc] init];
         self.lines = [[NSMutableArray alloc] init];
@@ -155,10 +181,16 @@
     if (self.segmentedStrings && self.segmentedStrings.count > 0) {
         CGFloat buttonWidth = self.bounds.size.width / self.segmentedStrings.count;
         
+        UIFont *btnFont = [UIFont systemFontOfSize:self.segmentedFontSize];
+        if (self.segmentFontFamilyName && ([[UIFont familyNames] containsObject:self.segmentFontFamilyName])) {
+            btnFont = [UIFont fontWithName:self.segmentFontFamilyName size:self.segmentedFontSize];
+        }
+        
         for (int i=0; i < self.segmentedStrings.count; i++) {
             
             CGFloat buttonX = buttonWidth * i;
             UIButton *btn = (self.buttons.count > i) ? self.buttons[i] : nil;
+            CGRect btnNewFrame = CGRectMake(buttonX, self.bounds.origin.y, buttonWidth, self.bounds.size.height);
             
             if (!btn ) {
                 btn = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -169,9 +201,9 @@
             if (!line) {
                 line = [[UIView alloc] init];
                 [self.lines addObject:line];
-            } else  {
-                btn.frame = CGRectMake(buttonX, self.bounds.origin.y, buttonWidth, self.bounds.size.height);
-                
+            }
+            else  {
+                btn.frame = btnNewFrame;
                 CGRect lineFrame = btn.frame;
                 CGSize btnTitleSize = [btn.titleLabel.text sizeWithFont:btn.titleLabel.font];
                 lineFrame.origin.x = btn.center.x - (lineFrame.size.width/2) ;
@@ -180,26 +212,19 @@
                 continue;
             }
             
-            btn.frame = CGRectMake(buttonX, self.bounds.origin.y, buttonWidth, self.bounds.size.height);
+            btn.frame = btnNewFrame;
             [btn setTitle:self.segmentedStrings[i] forState:UIControlStateNormal];
             [btn addTarget:self action:@selector(buttonSelected:) forControlEvents:UIControlEventTouchUpInside];
-            [btn.titleLabel setFont:[UIFont systemFontOfSize:self.segmentedFontSize]];
+            [btn.titleLabel setFont:btnFont];
             btn.backgroundColor = self.segmentBackgroundColor;
             [btn setTitleColor:self.segmentTextColor forState:UIControlStateNormal];
             
             [self addSubview:btn];
             
-            CGRect lineFrame = btn.frame;
-            lineFrame.size.height = self.lineSelectedHeight;
-            CGSize btnTitleSize = [btn.titleLabel.text sizeWithFont:btn.titleLabel.font];
-            lineFrame.size.width = btnTitleSize.width + LINE_SELECTED_EXTRA_PADDING_WIDTH;
-            lineFrame.origin.x = btn.center.x - (lineFrame.size.width/2) ;
-            lineFrame.origin.y = btn.titleLabel.frame.origin.y + (btnTitleSize.height/2) + LINE_SELECTED_MARGIN_TOP;
-            
+            CGRect lineFrame = [self lineFrameForbutton:btn];
             if (self.selectedItem != i) {
                 lineFrame.size.width = 0;
             }
-            
             line.frame = lineFrame;
             line.backgroundColor = self.lineColor;
             line.layer.cornerRadius = line.bounds.size.height/2;
@@ -210,6 +235,32 @@
             [self bringSubviewToFront:line];
         }
     }
+}
+
+-(CGRect)lineFrameForbutton:(UIButton*)btn {
+    CGRect lineFrame = btn.frame;
+    lineFrame.size.height = self.lineSelectedHeight;
+    CGSize btnTitleSize = [btn.titleLabel.text sizeWithFont:btn.titleLabel.font];
+    lineFrame.size.width = (self.selectedLineMode == CustomSegmentedSelectedLineModeText) ? btnTitleSize.width + LINE_SELECTED_EXTRA_PADDING_WIDTH : btn.bounds.size.width;
+    lineFrame.origin.x = btn.center.x - (lineFrame.size.width/2) ;
+    
+    switch (self.selectedLineAlign) {
+        case CustomSegmentedSelectedLineAlignTop:
+            lineFrame.origin.y = 0;
+            break;
+            
+        case CustomSegmentedSelectedLineAlignText:
+            lineFrame.origin.y = btn.titleLabel.frame.origin.y + (btnTitleSize.height/2) + LINE_SELECTED_MARGIN_TOP;
+            break;
+            
+        case CustomSegmentedSelectedLineAlignBottom:
+            lineFrame.origin.y = btn.bounds.origin.y + btn.bounds.size.height - lineFrame.size.height;
+            break;
+        default:
+            break;
+    }
+    
+    return lineFrame;
 }
 
 
@@ -235,7 +286,7 @@
         }
         else {
             CGSize btnTitleSize = [buttonPressed.titleLabel.text sizeWithFont:buttonPressed.titleLabel.font];
-            lineFrame.size.width = btnTitleSize.width;
+            lineFrame.size.width = (self.selectedLineMode == CustomSegmentedSelectedLineModeText) ? btnTitleSize.width + LINE_SELECTED_EXTRA_PADDING_WIDTH : buttonPressed.bounds.size.width;
         }
         
         line.center = CGPointMake(button.center.x, line.center.y);
@@ -275,11 +326,13 @@ RCT_EXPORT_MODULE()
 
 RCT_EXPORT_VIEW_PROPERTY(enabled, BOOL)
 
+// props
 RCT_REMAP_VIEW_PROPERTY(textValues, segmentedStrings, NSArray)
 RCT_REMAP_VIEW_PROPERTY(selected, selectedItem, NSInteger)
 RCT_REMAP_VIEW_PROPERTY(segmentedStyle, segmentedStyle, NSDictionary)
 RCT_REMAP_VIEW_PROPERTY(animation, animation, NSDictionary)
 
+// callback props
 RCT_REMAP_VIEW_PROPERTY(onSelectedWillChange, selectedWillChange, RCTDirectEventBlock)
 RCT_REMAP_VIEW_PROPERTY(onSelectedDidChange, selectedDidChange, RCTDirectEventBlock)
 
