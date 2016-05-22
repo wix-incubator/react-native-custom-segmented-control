@@ -63,7 +63,7 @@ textValues | [Array] Array of strings which will be presented on the segmented c
 selected | [int] The selected segment
 onSelectedWillChange | [function] callback function will be called **before** the selected animation will take place
 onSelectedDidChange | [function] callback function will be called **after** the selected animation will take place
-animation | [Object] see animation properties
+animation | [Object] see [animation properties](#animation-properties)
 segmentedStyle | [Object] see segmentedStyle properties
 
                                                  
