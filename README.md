@@ -63,11 +63,11 @@ textValues | [Array] Array of strings which will be presented on the segmented c
 selected | [int] The selected segment
 onSelectedWillChange | [function] callback function will be called **before** the selected animation will take place
 onSelectedDidChange | [function] callback function will be called **after** the selected animation will take place
-animation | [Object] see animation properties
-segmentedStyle | [Object] see segmentedStyle properties
+animation | [Object] see [Animation Properties](README.md#animation-properties)
+segmentedStyle | [Object] see [Segmented Style Properties](README.md#segmented-style-properties)
 
                                                  
-##Style Properties
+##Segmented Style Properties
 Attribute | Description
 --------- | -----------
 lineSelectedHeight | [float] The selected line height. Default is 2
@@ -79,7 +79,9 @@ lineColor | [Color] The selected line color. Default is 'black'
 selectedLineAlign | [`'top'`/`'bottom'`/`'text'`] The selected line vertical alignment. Defualt is `'text'`
 selectedLineMode | [`'full'`/`'text'`] The selected line mode. For determine if the line will be text width of full button width. Default is `'text'` 
  
- ##Animation Properties
+ 
+##Animation Properties
+ 
 Attribute | Description
 --------- | -----------
 duration | [float] The animation duration. Default is 0.2 sec
