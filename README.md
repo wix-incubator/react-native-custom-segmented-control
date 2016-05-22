@@ -79,7 +79,9 @@ lineColor | [Color] The selected line color. Default is 'black'
 selectedLineAlign | [`'top'`/`'bottom'`/`'text'`] The selected line vertical alignment. Defualt is `'text'`
 selectedLineMode | [`'full'`/`'text'`] The selected line mode. For determine if the line will be text width of full button width. Default is `'text'` 
  
- ##Animation Properties
+ 
+##Animation Properties
+ 
 Attribute | Description
 --------- | -----------
 duration | [float] The animation duration. Default is 0.2 sec
