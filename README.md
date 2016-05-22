@@ -64,10 +64,10 @@ selected | [int] The selected segment
 onSelectedWillChange | [function] callback function will be called **before** the selected animation will take place
 onSelectedDidChange | [function] callback function will be called **after** the selected animation will take place
 animation | [Object] see [animation properties](README.md#animation-properties)
-segmentedStyle | [Object] see segmentedStyle properties
+segmentedStyle | [Object] see [Segmented Style properties](README.md#segmented-style-properties)
 
                                                  
-##Style Properties
+##Segmented Style Properties
 Attribute | Description
 --------- | -----------
 lineSelectedHeight | [float] The selected line height. Default is 2
