@@ -25,23 +25,27 @@ class example extends Component {
         <View style={{ height: 300}}>
           <CustomSegmentedControl style={{
                                           flex:1,
-                                          backgroundColor: '#D4D4D4',
+                                          backgroundColor: 'white',
                                           marginVertical: 8
                                         }}
-                                  textValues={['ORDERS','HOTELS' ]}
+                                  textValues={['ORDERS','PRODUCTS' ]}
                                   selected={0}
                                   segmentedStyle={{
-                                                   lineSelectedHeight: 1.5,
+                                                   selectedLineHeight: 2,
                                                    fontSize:17,
+                                                   fontWeight: 'bold', // bold, italic, regular (default)
                                                    segmentBackgroundColor: 'transparent',
-                                                   segmentTextColor: 'black',
-                                                   lineColor: 'black',
+                                                   segmentTextColor: '#7a92a5',
+                                                   selectedLineColor: '#00adf5',
                                                    selectedLineAlign: 'bottom', // top/bottom/text
-                                                   selectedLineMode: 'full' // full/text
+                                                   selectedLineMode: 'text', // full/text
+                                                   selectedTextColor: 'black',
+                                                   selectedLinePaddingWidth: 30,
+                                                   segmentFontFamily: 'system-font-bold'
                                                  }}
                                   animation={{
-                                              duration: 0.6,
-                                              damping: 0.7
+                                              duration: 0.7,
+                                              damping: 0.5
                                               }}
                                   onSelectedWillChange={(event)=> {
                                   }}
@@ -58,7 +62,7 @@ class example extends Component {
                                          segmentBackgroundColor: 'transparent',
                                          segmentTextColor: 'black',
                                          segmentFontFamily: 'Copperplate',
-                                         lineColor: '#8A2D3C',
+                                         selectedLineColor: '#8A2D3C',
                                          }}
                                   animation={{
                                               duration: 0.7,
@@ -69,7 +73,7 @@ class example extends Component {
 
           <CustomSegmentedControl style={{flex: 1,
                                           backgroundColor: '#83D6DE',
-                                          borderRadius: 20,
+                                          borderRadius: 6,
                                           marginVertical: 8,
                                           marginHorizontal: 4
                                          }}
@@ -79,8 +83,9 @@ class example extends Component {
                                                  fontSize:15,
                                                  segmentBackgroundColor: 'transparent',
                                                  segmentTextColor: 'blue',
+                                                 selectedTextColor: 'white',
                                                  segmentFontFamily: 'Menlo',
-                                                 lineColor: 'red'
+                                                 selectedLineColor: 'red'
                                                  }}
                                   animation={{
                                               duration: 0.3,
@@ -96,7 +101,7 @@ class example extends Component {
                                                   segmentBackgroundColor: 'transparent',
                                                   segmentTextColor: '#E0E4CC',
                                                   segmentFontFamily: 'Verdana',
-                                                  lineColor: '#EB9532',
+                                                  selectedLineColor: '#EB9532',
                                                  selectedLineAlign: 'top'
                                                  }}
                                   animation={{
@@ -116,7 +121,7 @@ class example extends Component {
                                                   fontSize:12,
                                                   segmentBackgroundColor: 'transparent',
                                                   segmentTextColor: '#60646D',
-                                                  lineColor: '#953163',
+                                                  selectedLineColor: '#953163',
                                                   selectedLineAlign: 'top',
                                                   selectedLineMode: 'full'
                                                  }}

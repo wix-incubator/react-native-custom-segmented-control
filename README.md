@@ -34,12 +34,12 @@ Now use it in your jsx inside your `View`:
                                   textValues={['ORDERS','HOTELS' ]}
                                   selected={0}
                                   segmentedStyle={{
-                                                   lineSelectedHeight: 1.5,
+                                                   selectedLineHeight: 1.5,
                                                    fontSize:16,
                                                    segmentBackgroundColor: 'transparent',
                                                    segmentTextColor: 'black',
                                                    segmentFontFamily: 'Cochin',
-                                                   lineColor: 'black',
+                                                   selectedLineColor: 'black',
                                                    selectedLineAlign: 'bottom', // top/bottom/text
                                                    selectedLineMode: 'text' // full/text
                                                  }}
@@ -70,16 +70,18 @@ segmentedStyle | [Object] see [Segmented Style Properties](README.md#segmented-s
 ##Segmented Style Properties
 Attribute | Description
 --------- | -----------
-lineSelectedHeight | [float] The selected line height. Default is 2
+selectedLineHeight | [float] The selected line height. Default is 2
 fontSize | [float] The segmented control text font size. Default is 14
 segmentBackgroundColor | [Color] The segmented control background color. Default is `'black'`
 segmentTextColor | [Color] The segmented control text color. Default is system default (blue)
-segmentFontFamily | [Font] The segmented control font. Default is system default
-lineColor | [Color] The selected line color. Default is 'black'
+selectedTextColor | [Color] The selected segment color
+segmentFontFamily | [Font, `'system-font-bold'`, `'system-font'`] The segmented control font. Default is `system-font` default
+selectedLineColor | [Color] The selected line color. Default is 'black'
 selectedLineAlign | [`'top'`/`'bottom'`/`'text'`] The selected line vertical alignment. Defualt is `'text'`
-selectedLineMode | [`'full'`/`'text'`] The selected line mode. For determine if the line will be text width of full button width. Default is `'text'` 
- 
- 
+selectedLineMode | [`'full'`/`'text'`] The selected line mode. For determine if the line will be text width of full button width. Default is `'text'`
+selectedLinePaddingWidth | [float] The selected line width padding
+
+
 ##Animation Properties
  
 Attribute | Description
