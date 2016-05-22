@@ -29,23 +29,27 @@ Now use it in your jsx inside your `View`:
 ```jsx
 <CustomSegmentedControl style={{
                                           flex:1,
-                                          backgroundColor: 'transparent'
-                                          }}
-                                  textValues={['ORDERS','HOTELS' ]}
+                                          backgroundColor: 'white',
+                                          marginVertical: 8
+                                        }}
+                                  textValues={['ORDERS','PRODUCTS' ]}
                                   selected={0}
                                   segmentedStyle={{
-                                                   selectedLineHeight: 1.5,
-                                                   fontSize:16,
+                                                   selectedLineHeight: 2,
+                                                   fontSize:17,
+                                                   fontWeight: 'bold', // bold, italic, regular (default)
                                                    segmentBackgroundColor: 'transparent',
-                                                   segmentTextColor: 'black',
-                                                   segmentFontFamily: 'Cochin',
-                                                   selectedLineColor: 'black',
+                                                   segmentTextColor: '#7a92a5',
+                                                   selectedLineColor: '#00adf5',
                                                    selectedLineAlign: 'bottom', // top/bottom/text
-                                                   selectedLineMode: 'text' // full/text
+                                                   selectedLineMode: 'text', // full/text
+                                                   selectedTextColor: 'black',
+                                                   selectedLinePaddingWidth: 30,
+                                                   segmentFontFamily: 'system-font-bold'
                                                  }}
                                   animation={{
-                                              duration: 0.4,
-                                              damping: 0.6
+                                              duration: 0.7,
+                                              damping: 0.5
                                               }}
                                   onSelectedWillChange={(event)=> {
                                   }}
