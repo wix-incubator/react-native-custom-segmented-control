@@ -9,21 +9,25 @@
 #import "CustomSegmentedControlManager.h"
 #import "UIView+React.h"
 
-#define LINE_SELECTED_EXTRA_PADDING_WIDTH       4
 #define LINE_SELECTED_MARGIN_TOP                2
 
-#define DEFAULT_LINE_SELECTED_HEIGHT            2
+#define DEFAULT_SELECTED_LINE_PADDING_WIDTH     4
+#define DEFAULT_SELECTED_LINE_HEIGHT            2
 #define DEFAULT_ANIMATION_DURATION              0.2
 #define DEFAULT_ANIMATION_DAMPING               0
 #define DEFAULT_FONT_SIZE                       14
 #define DEFAULT_LINE_COLOR                      [UIColor blackColor]
+#define DEFAULT_SYSTEM_FONT                     @"system-font"
+#define DEFAULT_SYSTEM_FONT_BOLD                @"system-font-bold"
 
-#define STYLE_LINE_SELECTED_HEIGHT              @"lineSelectedHeight"
+#define STYLE_SELECTED_LINE_HEIGHT              @"selectedLineHeight"
+#define STYLE_SELETCED_LINE_PADDING_WIDTH       @"selectedLinePaddingWidth"
 #define STYLE_FONT_SIZE                         @"fontSize"
 #define STYLE_SEGMENT_BACKGROUND_COLOR          @"segmentBackgroundColor"
 #define STYLE_SEGMENT_TEXT_COLOR                @"segmentTextColor"
+#define STYLE_SELECTED_TEXT_COLOR               @"selectedTextColor"
 #define STYLE_SEGMENT_FONT_FAMILY               @"segmentFontFamily"
-#define STYLE_LINE_COLOR                        @"lineColor"
+#define STYLE_SELECTED_LINE_COLOR               @"selectedLineColor"
 #define STYLE_SELECTED_LINE_ALIGN               @"alignSelectedLine"
 #define STYLE_SELECTED_LINE_MODE                @"selectedLineMode"
 #define STYLE_SELECTED_LINE_ALIGN               @"selectedLineAlign"
@@ -52,6 +56,7 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedLineMode, (@{
 @end
 
 
+
 @interface CustomSegmentedControl : UIView
 
 // props
@@ -65,12 +70,15 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedLineMode, (@{
 // style props
 @property (nonatomic) CGFloat lineSelectedHeight;
 @property (nonatomic) CGFloat segmentedFontSize;
+@property (nonatomic) CGFloat selectedLinePaddingWidth;
 @property (nonatomic, strong) UIColor *segmentBackgroundColor;
 @property (nonatomic, strong) UIColor *segmentTextColor;
 @property (nonatomic, strong) NSString *segmentFontFamilyName;
 @property (nonatomic, strong) UIColor *lineColor;
+@property (nonatomic, strong) UIColor *selectedTextColor;
 @property (nonatomic) CustomSegmentedSelectedLineAlign selectedLineAlign;
 @property (nonatomic) CustomSegmentedSelectedLineMode selectedLineMode;
+
 
 // animation props
 @property (nonatomic) CGFloat animationDuration;
@@ -89,7 +97,7 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedLineMode, (@{
     _segmentedStyle = segmentedStyle;
     
     // STYLE_LINE_SELECTED_HEIGHT
-    id lineSelectedHeight = self.segmentedStyle[STYLE_LINE_SELECTED_HEIGHT];
+    id lineSelectedHeight = self.segmentedStyle[STYLE_SELECTED_LINE_HEIGHT];
     if (lineSelectedHeight) {
         self.lineSelectedHeight = [RCTConvert CGFloat:lineSelectedHeight];
     }
@@ -98,6 +106,12 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedLineMode, (@{
     id fontSize = self.segmentedStyle[STYLE_FONT_SIZE];
     if (fontSize) {
         self.segmentedFontSize = [RCTConvert CGFloat:fontSize];
+    }
+    
+    // STYLE_SELETCED_LINE_PADDING_WIDTH
+    id selectedLinePaddingWidth = self.segmentedStyle[STYLE_SELETCED_LINE_PADDING_WIDTH];
+    if (selectedLinePaddingWidth) {
+        self.selectedLinePaddingWidth = [RCTConvert CGFloat:selectedLinePaddingWidth];
     }
     
     // STYLE_LINE_SELECTED_HEIGHT
@@ -119,9 +133,15 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedLineMode, (@{
     }
     
     // STYLE_LINE_COLOR
-    id lineColor = self.segmentedStyle[STYLE_LINE_COLOR];
+    id lineColor = self.segmentedStyle[STYLE_SELECTED_LINE_COLOR];
     if (lineColor) {
         self.lineColor = [RCTConvert UIColor:lineColor];
+    }
+    
+    // STYLE_LINE_COLOR
+    id seletcedTextColor = self.segmentedStyle[STYLE_SELECTED_TEXT_COLOR];
+    if (seletcedTextColor) {
+        self.selectedTextColor = [RCTConvert UIColor:seletcedTextColor];
     }
     
     // STYLE_LINE_STICK_TO_BOTTOM
@@ -161,9 +181,11 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedLineMode, (@{
     if (self){
         self.animationDuration = DEFAULT_ANIMATION_DURATION;
         self.animationDamping = DEFAULT_ANIMATION_DAMPING;
-        self.lineSelectedHeight = DEFAULT_LINE_SELECTED_HEIGHT;
+        self.lineSelectedHeight = DEFAULT_SELECTED_LINE_HEIGHT;
         self.segmentedFontSize = DEFAULT_FONT_SIZE;
         self.lineColor = DEFAULT_LINE_COLOR;
+        self.selectedTextColor = DEFAULT_LINE_COLOR;
+        self.selectedLinePaddingWidth = DEFAULT_SELECTED_LINE_PADDING_WIDTH;
         self.selectedLineAlign = CustomSegmentedSelectedLineAlignText;
         self.selectedLineMode = CustomSegmentedSelectedLineModeText;
         
@@ -175,16 +197,27 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedLineMode, (@{
 }
 
 
+-(UIFont*)buttonTitleFont {
+    UIFont *btnFont = [UIFont systemFontOfSize:self.segmentedFontSize];
+    if (self.segmentFontFamilyName) {
+        if ([self.segmentFontFamilyName isEqualToString:DEFAULT_SYSTEM_FONT_BOLD]) {
+            return [UIFont boldSystemFontOfSize:self.segmentedFontSize];
+        }
+            
+        UIFont *tmpFont = [UIFont fontWithName:self.segmentFontFamilyName size:self.segmentedFontSize];
+        btnFont = (tmpFont) ? tmpFont : btnFont;
+    }
+    return btnFont;
+}
+
+
 -(void)reactSetFrame:(CGRect)frame {
     [super reactSetFrame:frame];
     
     if (self.segmentedStrings && self.segmentedStrings.count > 0) {
         CGFloat buttonWidth = self.bounds.size.width / self.segmentedStrings.count;
         
-        UIFont *btnFont = [UIFont systemFontOfSize:self.segmentedFontSize];
-        if (self.segmentFontFamilyName && ([[UIFont familyNames] containsObject:self.segmentFontFamilyName])) {
-            btnFont = [UIFont fontWithName:self.segmentFontFamilyName size:self.segmentedFontSize];
-        }
+        UIFont *btnFont = [self buttonTitleFont];
         
         for (int i=0; i < self.segmentedStrings.count; i++) {
             
@@ -224,7 +257,13 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedLineMode, (@{
             CGRect lineFrame = [self lineFrameForbutton:btn];
             if (self.selectedItem != i) {
                 lineFrame.size.width = 0;
+                
             }
+            
+            if (self.selectedItem == i) {
+                [btn setTitleColor:self.selectedTextColor forState:UIControlStateNormal];
+            }
+            
             line.frame = lineFrame;
             line.backgroundColor = self.lineColor;
             line.layer.cornerRadius = line.bounds.size.height/2;
@@ -241,7 +280,7 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedLineMode, (@{
     CGRect lineFrame = btn.frame;
     lineFrame.size.height = self.lineSelectedHeight;
     CGSize btnTitleSize = [btn.titleLabel.text sizeWithFont:btn.titleLabel.font];
-    lineFrame.size.width = (self.selectedLineMode == CustomSegmentedSelectedLineModeText) ? btnTitleSize.width + LINE_SELECTED_EXTRA_PADDING_WIDTH : btn.bounds.size.width;
+    lineFrame.size.width = (self.selectedLineMode == CustomSegmentedSelectedLineModeText) ? btnTitleSize.width + self.selectedLinePaddingWidth*2 : btn.bounds.size.width;
     lineFrame.origin.x = btn.center.x - (lineFrame.size.width/2) ;
     
     switch (self.selectedLineAlign) {
@@ -250,7 +289,7 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedLineMode, (@{
             break;
             
         case CustomSegmentedSelectedLineAlignText:
-            lineFrame.origin.y = btn.titleLabel.frame.origin.y + (btnTitleSize.height/2) + LINE_SELECTED_MARGIN_TOP;
+            lineFrame.origin.y = btn.titleLabel.frame.origin.y + (btnTitleSize.height/2) + self.selectedLinePaddingWidth;
             break;
             
         case CustomSegmentedSelectedLineAlignBottom:
@@ -286,7 +325,7 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedLineMode, (@{
         }
         else {
             CGSize btnTitleSize = [buttonPressed.titleLabel.text sizeWithFont:buttonPressed.titleLabel.font];
-            lineFrame.size.width = (self.selectedLineMode == CustomSegmentedSelectedLineModeText) ? btnTitleSize.width + LINE_SELECTED_EXTRA_PADDING_WIDTH : buttonPressed.bounds.size.width;
+            lineFrame.size.width = (self.selectedLineMode == CustomSegmentedSelectedLineModeText) ? btnTitleSize.width + self.selectedLinePaddingWidth*2 : buttonPressed.bounds.size.width;
         }
         
         line.center = CGPointMake(button.center.x, line.center.y);
@@ -295,11 +334,14 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedLineMode, (@{
         center.y = line.center.y;
         
         CGFloat damping = (button == buttonPressed) ? self.animationDamping : 0;
+        UIColor *buttonTextColor = (button == buttonPressed) ? self.selectedTextColor : self.segmentTextColor;
         
         [UIView animateWithDuration:self.animationDuration delay:0 usingSpringWithDamping:damping initialSpringVelocity:0 options:0 animations:^{
             
             line.frame = lineFrame;
             line.center = center;
+            [button setTitleColor:buttonTextColor forState:UIControlStateNormal];
+            
             
         } completion:^(BOOL finished) {
             if (_selectedDidChange && button == buttonPressed) {
@@ -308,7 +350,6 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedLineMode, (@{
         }];
     }
 }
-
 
 @end
 

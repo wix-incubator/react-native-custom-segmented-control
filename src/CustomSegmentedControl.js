@@ -15,7 +15,8 @@ export default class CustomSegmentedControl extends React.Component {
 		const transformedProps = {...this.props};
 		_.update(transformedProps, 'segmentedStyle.segmentBackgroundColor', (c) => processColor(c));
 		_.update(transformedProps, 'segmentedStyle.segmentTextColor', (c) => processColor(c));
-		_.update(transformedProps, 'segmentedStyle.lineColor', (c) => processColor(c));
+		_.update(transformedProps, 'segmentedStyle.selectedLineColor', (c) => processColor(c));
+		_.update(transformedProps, 'segmentedStyle.selectedTextColor', (c) => processColor(c));
 		return <NativeCustomSegmentedControl {...transformedProps}/>
 	}
 }
