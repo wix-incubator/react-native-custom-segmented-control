@@ -203,7 +203,7 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedLineMode, (@{
         if ([self.segmentFontFamilyName isEqualToString:DEFAULT_SYSTEM_FONT_BOLD]) {
             return [UIFont boldSystemFontOfSize:self.segmentedFontSize];
         }
-            
+        
         UIFont *tmpFont = [UIFont fontWithName:self.segmentFontFamilyName size:self.segmentedFontSize];
         btnFont = (tmpFont) ? tmpFont : btnFont;
     }
@@ -305,7 +305,7 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedLineMode, (@{
 
 -(void)buttonSelected:(UIButton*)buttonPressed {
     NSInteger previousSelectedItem = self.selectedItem;
-    self.selectedItem = [self.buttons indexOfObject:buttonPressed];
+    _selectedItem = [self.buttons indexOfObject:buttonPressed];
     
     if (previousSelectedItem == self.selectedItem) {
         return;
@@ -348,6 +348,14 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedLineMode, (@{
                 _selectedDidChange(@{@"selected" : [NSNumber numberWithInteger:self.selectedItem], @"finished" : [NSNumber numberWithBool:finished]});
             }
         }];
+    }
+}
+
+
+-(void)setSelectedItem:(NSInteger)selectedItem {
+    if (self.buttons.count > selectedItem && selectedItem >= 0) {
+        UIButton *selectedButton = self.buttons[selectedItem];
+        [self buttonSelected:selectedButton];
     }
 }
 
