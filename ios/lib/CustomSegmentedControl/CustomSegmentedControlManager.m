@@ -35,7 +35,6 @@
 #define STYLE_SELECTED_LINE_MODE                @"selectedLineMode"
 #define STYLE_SELECTED_LINE_ALIGN               @"selectedLineAlign"
 
-
 #define ANIMATION_DAMPING                       @"damping"
 #define ANIMATION_DURATION                      @"duration"
 #define ANIMATION_TYPE                          @"animationType"
@@ -73,14 +72,14 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedAnimationType, (@{
 
 @interface CustomSegmentedControl : UIView
 
-// props
-@property (nonatomic, strong) NSArray<NSString*> *segmentedStrings;
 @property (nonatomic, strong) NSMutableArray<UIButton*> *buttons;
 @property (nonatomic, strong) NSMutableArray<UIView*> *lines;
+
+// props
+@property (nonatomic, strong) NSArray<NSString*> *segmentedStrings;
 @property (nonatomic) NSInteger selectedItem;
 @property (nonatomic, strong) NSDictionary *segmentedStyle;
 @property (nonatomic, strong) NSDictionary *animation;
-
 
 // style props
 @property (nonatomic) CGFloat lineSelectedHeight;
@@ -95,7 +94,6 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedAnimationType, (@{
 @property (nonatomic) CustomSegmentedSelectedLineAlign selectedLineAlign;
 @property (nonatomic) CustomSegmentedSelectedLineMode selectedLineMode;
 @property (nonatomic) CustomSegmentedSelectedAnimationType customAnimationType;
-
 
 // animation props
 @property (nonatomic) CGFloat animationDuration;
@@ -442,7 +440,7 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedAnimationType, (@{
         [button setTitleColor:buttonTextColor forState:UIControlStateNormal];
         
     } completion:^(BOOL finished) {
-        if (_selectedDidChange && button == buttonPressed && (self.buttons.count - 1)) {
+        if (_selectedDidChange && button == buttonPressed) {
             _selectedDidChange(@{@"selected" : [NSNumber numberWithInteger:self.selectedItem], @"finished" : [NSNumber numberWithBool:finished]});
         }
     }];
@@ -450,10 +448,10 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedAnimationType, (@{
 
 
 -(void)setSelectedItem:(NSInteger)selectedItem {
-    if (self.buttons.count > selectedItem && selectedItem >= 0) {
-        UIButton *selectedButton = self.buttons[selectedItem];
-        [self buttonSelected:selectedButton];
-    }
+        if (self.buttons.count > selectedItem && selectedItem >= 0) {
+            UIButton *selectedButton = self.buttons[selectedItem];
+            [self buttonSelected:selectedButton];
+        }
 }
 
 @end
