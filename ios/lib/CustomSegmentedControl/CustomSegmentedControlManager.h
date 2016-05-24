@@ -23,6 +23,12 @@ typedef NS_ENUM(NSInteger, CustomSegmentedSelectedLineMode) {
     CustomSegmentedSelectedLineModeText
 };
 
+typedef NS_ENUM(NSInteger, CustomSegmentedSelectedAnimationType) {
+    CustomSegmentedSelectedAnimationTypeDefault,
+    CustomSegmentedSelectedAnimationTypeMiddleLine,
+    CustomSegmentedSelectedAnimationTypeCloseAndAndOpen
+};
+
 @interface RCTConvert(CustomSegmentedSelectedLineAlign)
 
 + (CustomSegmentedSelectedLineAlign)CustomSegmentedSelectedLineAlign:(id)json;
@@ -32,6 +38,12 @@ typedef NS_ENUM(NSInteger, CustomSegmentedSelectedLineMode) {
 @interface RCTConvert(CustomSegmentedSelectedLineMode)
 
 + (CustomSegmentedSelectedLineMode)CustomSegmentedSelectedLineMode:(id)json;
+
+@end
+
+@interface RCTConvert(CustomSegmentedSelectedAnimationType)
+
++ (CustomSegmentedSelectedAnimationType)CustomSegmentedSelectedAnimationType:(id)json;
 
 @end
 

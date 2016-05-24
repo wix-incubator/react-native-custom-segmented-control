@@ -79,11 +79,13 @@ fontSize | [float] The segmented control text font size. Default is 14
 segmentBackgroundColor | [Color] The segmented control background color. Default is `'black'`
 segmentTextColor | [Color] The segmented control text color. Default is system default (blue)
 selectedTextColor | [Color] The selected segment color
+segmentHighlightTextColor | [Color] The segmnet highlight color. Default is black with alpha 0.5
 segmentFontFamily | [Font/`'system-font-bold'`/`'system-font'`] The segmented control font. Default is `system-font` default
 selectedLineColor | [Color] The selected line color. Default is 'black'
 selectedLineAlign | [`'top'`/`'bottom'`/`'text'`] The selected line vertical alignment. Defualt is `'text'`
 selectedLineMode | [`'full'`/`'text'`] The selected line mode. For determine if the line will be text width of full button width. Default is `'text'`
 selectedLinePaddingWidth | [float] The selected line width padding
+
 
 
 ##Animation Properties
@@ -92,3 +94,4 @@ Attribute | Description
 --------- | -----------
 duration | [float] The animation duration. Default is 0.2 sec
 damping | [float] The damping ratio for the spring animation. Default is 0 (no damping)
+animationType | [`'default'`, `'middle-line'`, `'close-and-open'`] The transition animation type. Default is `'default'`

@@ -17,6 +17,8 @@
 #define DEFAULT_ANIMATION_DAMPING               0
 #define DEFAULT_FONT_SIZE                       14
 #define DEFAULT_LINE_COLOR                      [UIColor blackColor]
+#define DEFAULT_SEGMENTED_HIGHLIGHT_COLOR       [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5]
+
 #define DEFAULT_SYSTEM_FONT                     @"system-font"
 #define DEFAULT_SYSTEM_FONT_BOLD                @"system-font-bold"
 
@@ -25,6 +27,7 @@
 #define STYLE_FONT_SIZE                         @"fontSize"
 #define STYLE_SEGMENT_BACKGROUND_COLOR          @"segmentBackgroundColor"
 #define STYLE_SEGMENT_TEXT_COLOR                @"segmentTextColor"
+#define STYLE_SEGMENT_HIGHLIGHT_TEXT_COLOR      @"segmentHighlightTextColor"
 #define STYLE_SELECTED_TEXT_COLOR               @"selectedTextColor"
 #define STYLE_SEGMENT_FONT_FAMILY               @"segmentFontFamily"
 #define STYLE_SELECTED_LINE_COLOR               @"selectedLineColor"
@@ -32,9 +35,10 @@
 #define STYLE_SELECTED_LINE_MODE                @"selectedLineMode"
 #define STYLE_SELECTED_LINE_ALIGN               @"selectedLineAlign"
 
+
 #define ANIMATION_DAMPING                       @"damping"
 #define ANIMATION_DURATION                      @"duration"
-
+#define ANIMATION_TYPE                          @"animationType"
 
 @implementation RCTConvert(CustomSegmentedSelectedLineAlign)
 
@@ -55,6 +59,16 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedLineMode, (@{
 
 @end
 
+@implementation RCTConvert(CustomSegmentedSelectedAnimationType)
+
+RCT_ENUM_CONVERTER(CustomSegmentedSelectedAnimationType, (@{
+                                                            @"default": @(CustomSegmentedSelectedAnimationTypeDefault),
+                                                            @"middle-line": @(CustomSegmentedSelectedAnimationTypeMiddleLine),
+                                                            @"close-and-open": @(CustomSegmentedSelectedAnimationTypeCloseAndAndOpen)
+                                                            }), CustomSegmentedSelectedAnimationTypeDefault, integerValue)
+
+@end
+
 
 
 @interface CustomSegmentedControl : UIView
@@ -67,17 +81,20 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedLineMode, (@{
 @property (nonatomic, strong) NSDictionary *segmentedStyle;
 @property (nonatomic, strong) NSDictionary *animation;
 
+
 // style props
 @property (nonatomic) CGFloat lineSelectedHeight;
 @property (nonatomic) CGFloat segmentedFontSize;
 @property (nonatomic) CGFloat selectedLinePaddingWidth;
 @property (nonatomic, strong) UIColor *segmentBackgroundColor;
 @property (nonatomic, strong) UIColor *segmentTextColor;
+@property (nonatomic, strong) UIColor *segmentHighlightTextColor;
 @property (nonatomic, strong) NSString *segmentFontFamilyName;
 @property (nonatomic, strong) UIColor *lineColor;
 @property (nonatomic, strong) UIColor *selectedTextColor;
 @property (nonatomic) CustomSegmentedSelectedLineAlign selectedLineAlign;
 @property (nonatomic) CustomSegmentedSelectedLineMode selectedLineMode;
+@property (nonatomic) CustomSegmentedSelectedAnimationType customAnimationType;
 
 
 // animation props
@@ -126,6 +143,12 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedLineMode, (@{
         self.segmentTextColor = [RCTConvert UIColor:segmentTextColor];
     }
     
+    // STYLE_SEGMENT_HIGHLIGHT_TEXT_COLOR
+    id segmentHighlightTextColor = self.segmentedStyle[STYLE_SEGMENT_HIGHLIGHT_TEXT_COLOR];
+    if (segmentHighlightTextColor) {
+        self.segmentHighlightTextColor = [RCTConvert UIColor:segmentHighlightTextColor];
+    }
+    
     // STYLE_SEGMENT_FONT_FAMILY
     id segmentFontFamily = self.segmentedStyle[STYLE_SEGMENT_FONT_FAMILY];
     if (segmentFontFamily) {
@@ -172,6 +195,12 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedLineMode, (@{
     if (animationDamping) {
         self.animationDamping = [RCTConvert CGFloat:animationDamping];
     }
+    
+    // ANIMATION_TYPE
+    id animationType = self.animation[ANIMATION_TYPE];
+    if (animationType) {
+        self.customAnimationType = [RCTConvert CustomSegmentedSelectedAnimationType:animationType];
+    }
 }
 
 
@@ -185,9 +214,11 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedLineMode, (@{
         self.segmentedFontSize = DEFAULT_FONT_SIZE;
         self.lineColor = DEFAULT_LINE_COLOR;
         self.selectedTextColor = DEFAULT_LINE_COLOR;
+        self.segmentHighlightTextColor = DEFAULT_SEGMENTED_HIGHLIGHT_COLOR;
         self.selectedLinePaddingWidth = DEFAULT_SELECTED_LINE_PADDING_WIDTH;
         self.selectedLineAlign = CustomSegmentedSelectedLineAlignText;
         self.selectedLineMode = CustomSegmentedSelectedLineModeText;
+        self.customAnimationType = CustomSegmentedSelectedAnimationTypeDefault;
         
         self.buttons = [[NSMutableArray alloc] init];
         self.lines = [[NSMutableArray alloc] init];
@@ -226,7 +257,7 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedLineMode, (@{
             CGRect btnNewFrame = CGRectMake(buttonX, self.bounds.origin.y, buttonWidth, self.bounds.size.height);
             
             if (!btn ) {
-                btn = [UIButton buttonWithType:UIButtonTypeSystem];
+                btn = [UIButton buttonWithType:UIButtonTypeCustom];
                 [self.buttons addObject:btn];
             }
             
@@ -251,6 +282,7 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedLineMode, (@{
             [btn.titleLabel setFont:btnFont];
             btn.backgroundColor = self.segmentBackgroundColor;
             [btn setTitleColor:self.segmentTextColor forState:UIControlStateNormal];
+            [btn setTitleColor:self.segmentHighlightTextColor forState:UIControlStateHighlighted];
             
             [self addSubview:btn];
             
@@ -333,22 +365,87 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedLineMode, (@{
         CGPoint center = button.center;
         center.y = line.center.y;
         
-        CGFloat damping = (button == buttonPressed) ? self.animationDamping : 0;
         UIColor *buttonTextColor = (button == buttonPressed) ? self.selectedTextColor : self.segmentTextColor;
+        CGFloat duration = (button == buttonPressed) ? self.animationDuration : 0;
+        CGFloat damping = (button == buttonPressed) ? self.animationDamping : 0;
         
-        [UIView animateWithDuration:self.animationDuration delay:0 usingSpringWithDamping:damping initialSpringVelocity:0 options:0 animations:^{
-            
-            line.frame = lineFrame;
-            line.center = center;
-            [button setTitleColor:buttonTextColor forState:UIControlStateNormal];
-            
-            
-        } completion:^(BOOL finished) {
-            if (_selectedDidChange && button == buttonPressed) {
-                _selectedDidChange(@{@"selected" : [NSNumber numberWithInteger:self.selectedItem], @"finished" : [NSNumber numberWithBool:finished]});
+        switch (self.customAnimationType) {
+                
+            case CustomSegmentedSelectedAnimationTypeCloseAndAndOpen:
+            {
+                
+                [self doTransitionAnimation:line
+                               lineNewFrame:lineFrame
+                                   duration:self.animationDuration
+                                    damping:self.animationDamping
+                                     button:button
+                              buttonPressed:buttonPressed
+                            buttonTextColor:buttonTextColor
+                      initialSpringVelocity:0];
             }
-        }];
+                break;
+                
+            case CustomSegmentedSelectedAnimationTypeMiddleLine:
+            {
+                if (button == buttonPressed) {
+                    
+                    CGRect tmpFrame = lineFrame;
+                    tmpFrame.size.width = tmpFrame.size.width*0.9;
+                    line.frame = tmpFrame;
+                    line.center = center;
+                }
+                
+                [self doTransitionAnimation:line
+                               lineNewFrame:lineFrame
+                                   duration:duration damping:damping
+                                     button:button buttonPressed:buttonPressed
+                            buttonTextColor:buttonTextColor
+                      initialSpringVelocity:0];
+                
+            }
+                break;
+                
+            default:
+            {
+                
+                [self doTransitionAnimation:line
+                               lineNewFrame:lineFrame
+                                   duration:duration
+                                    damping:damping
+                                     button:button
+                              buttonPressed:buttonPressed
+                            buttonTextColor:buttonTextColor
+                      initialSpringVelocity:1.0];
+            }
+                break;
+        }
     }
+}
+
+
+-(void)doTransitionAnimation:(UIView*)line
+                lineNewFrame:(CGRect)lineFrame
+                    duration:(CGFloat)duration
+                     damping:(CGFloat)damping
+                      button:(UIButton*)button
+               buttonPressed:(UIButton*)buttonPressed
+             buttonTextColor:(UIColor*)buttonTextColor
+       initialSpringVelocity:(CGFloat)velocity {
+    
+    CGPoint center = button.center;
+    center.y = line.center.y;
+    
+    [UIView animateWithDuration:duration delay:0 usingSpringWithDamping:damping initialSpringVelocity:velocity options:0 animations:^{
+        
+        line.frame = lineFrame;
+        line.center = center;
+        [button setTitleColor:buttonTextColor forState:UIControlStateNormal];
+        
+    } completion:^(BOOL finished) {
+        if (_selectedDidChange && button == buttonPressed && (self.buttons.count - 1)) {
+            _selectedDidChange(@{@"selected" : [NSNumber numberWithInteger:self.selectedItem], @"finished" : [NSNumber numberWithBool:finished]});
+        }
+    }];
 }
 
 
