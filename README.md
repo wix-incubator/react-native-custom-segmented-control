@@ -48,14 +48,14 @@ Now use it in your jsx inside your `View`:
 		selectedLinePaddingWidth: 30,
 		segmentFontFamily: 'system-font-bold'                                                 
 		}}
-animation={{
-	   duration: 0.7,
-	   damping: 0.5
-	   }}
-       onSelectedWillChange={(event)=> {
-       }}
-       onSelectedDidChange={(event)=> {
-       }}
+	animation={{
+		duration: 0.7,
+		damping: 0.5
+	}}
+	onSelectedWillChange={(event)=> {
+	}}
+	onSelectedDidChange={(event)=> {
+	}}
 />
 ```
 
