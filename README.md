@@ -46,8 +46,8 @@ Now use it in your jsx inside your `View`:
 		selectedLineMode: 'text', // full/text
 		selectedTextColor: 'black',                                                  
 		selectedLinePaddingWidth: 30,
-		segmentFontFamily: 'system-font-bold'                                                 
-		}}
+		segmentFontFamily: 'system-font-bold'
+	}}
 	animation={{
 		duration: 0.7,
 		damping: 0.5
