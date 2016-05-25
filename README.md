@@ -52,8 +52,7 @@ Now use it in your jsx inside your `View`:
                                	}}
                                	onSelectedDidChange={(event)=> {
                                	}}
-
-          />
+/>
 ```
 
 ##Properties
