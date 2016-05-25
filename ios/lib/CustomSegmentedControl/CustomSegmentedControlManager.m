@@ -287,7 +287,6 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedAnimationType, (@{
             CGRect lineFrame = [self lineFrameForbutton:btn];
             if (self.selectedItem != i) {
                 lineFrame.size.width = 0;
-                
             }
             
             if (self.selectedItem == i) {
@@ -305,6 +304,7 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedAnimationType, (@{
         }
     }
 }
+
 
 -(CGRect)lineFrameForbutton:(UIButton*)btn {
     CGRect lineFrame = btn.frame;
@@ -333,14 +333,13 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedAnimationType, (@{
 }
 
 
--(void)buttonSelected:(UIButton*)buttonPressed {
+-(void)buttonSelected:(UIButton*)buttonPressed animated:(BOOL)animated {
     NSInteger previousSelectedItem = self.selectedItem;
     _selectedItem = [self.buttons indexOfObject:buttonPressed];
     
     if (previousSelectedItem == self.selectedItem) {
         return;
     }
-    
     if (_selectedWillChange) {
         _selectedWillChange(@{@"selected" : @(self.selectedItem)});
     }
@@ -367,57 +366,71 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedAnimationType, (@{
         CGFloat duration = (button == buttonPressed) ? self.animationDuration : 0;
         CGFloat damping = (button == buttonPressed) ? self.animationDamping : 0;
         
-        switch (self.customAnimationType) {
-                
-            case CustomSegmentedSelectedAnimationTypeCloseAndAndOpen:
-            {
-                
-                [self doTransitionAnimation:line
-                               lineNewFrame:lineFrame
-                                   duration:self.animationDuration
-                                    damping:self.animationDamping
-                                     button:button
-                              buttonPressed:buttonPressed
-                            buttonTextColor:buttonTextColor
-                      initialSpringVelocity:0];
-            }
-                break;
-                
-            case CustomSegmentedSelectedAnimationTypeMiddleLine:
-            {
-                if (button == buttonPressed) {
+        if (!animated) {
+            line.frame = lineFrame;
+            line.center = center;
+            [button setTitleColor:buttonTextColor forState:UIControlStateNormal];
+        }
+        else {
+            
+            switch (self.customAnimationType) {
                     
-                    CGRect tmpFrame = lineFrame;
-                    tmpFrame.size.width = tmpFrame.size.width*0.9;
-                    line.frame = tmpFrame;
-                    line.center = center;
+                case CustomSegmentedSelectedAnimationTypeCloseAndAndOpen:
+                {
+                    
+                    [self doTransitionAnimation:line
+                                   lineNewFrame:lineFrame
+                                       duration:self.animationDuration
+                                        damping:self.animationDamping
+                                         button:button
+                                  buttonPressed:buttonPressed
+                                buttonTextColor:buttonTextColor
+                          initialSpringVelocity:0];
                 }
-                
-                [self doTransitionAnimation:line
-                               lineNewFrame:lineFrame
-                                   duration:duration damping:damping
-                                     button:button buttonPressed:buttonPressed
-                            buttonTextColor:buttonTextColor
-                      initialSpringVelocity:0];
-                
+                    break;
+                    
+                case CustomSegmentedSelectedAnimationTypeMiddleLine:
+                {
+                    if (button == buttonPressed) {
+                        
+                        CGRect tmpFrame = lineFrame;
+                        tmpFrame.size.width = tmpFrame.size.width*0.9;
+                        line.frame = tmpFrame;
+                        line.center = center;
+                    }
+                    
+                    [self doTransitionAnimation:line
+                                   lineNewFrame:lineFrame
+                                       duration:duration
+                                        damping:damping
+                                         button:button buttonPressed:buttonPressed
+                                buttonTextColor:buttonTextColor
+                          initialSpringVelocity:0];
+                    
+                }
+                    break;
+                    
+                default:
+                {
+                    
+                    [self doTransitionAnimation:line
+                                   lineNewFrame:lineFrame
+                                       duration:duration
+                                        damping:damping
+                                         button:button
+                                  buttonPressed:buttonPressed
+                                buttonTextColor:buttonTextColor
+                          initialSpringVelocity:1.0];
+                }
+                    break;
             }
-                break;
-                
-            default:
-            {
-                
-                [self doTransitionAnimation:line
-                               lineNewFrame:lineFrame
-                                   duration:duration
-                                    damping:damping
-                                     button:button
-                              buttonPressed:buttonPressed
-                            buttonTextColor:buttonTextColor
-                      initialSpringVelocity:1.0];
-            }
-                break;
         }
     }
+}
+
+
+-(void)buttonSelected:(UIButton*)buttonPressed {
+    [self buttonSelected:buttonPressed animated:YES];
 }
 
 
@@ -433,26 +446,38 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedAnimationType, (@{
     CGPoint center = button.center;
     center.y = line.center.y;
     
-    [UIView animateWithDuration:duration delay:0 usingSpringWithDamping:damping initialSpringVelocity:velocity options:0 animations:^{
-        
+    if (duration == 0.0) {
         line.frame = lineFrame;
         line.center = center;
         [button setTitleColor:buttonTextColor forState:UIControlStateNormal];
-        
-    } completion:^(BOOL finished) {
-        if (_selectedDidChange && button == buttonPressed) {
-            _selectedDidChange(@{@"selected" : [NSNumber numberWithInteger:self.selectedItem], @"finished" : [NSNumber numberWithBool:finished]});
+        if (_selectedDidChange && ([self.buttons indexOfObject:button] == (self.buttons.count - 1))) {
+            _selectedDidChange(@{@"selected" : [NSNumber numberWithInteger:self.selectedItem], @"finished" : [NSNumber numberWithBool:YES]});
         }
-    }];
+    }
+    else {
+        
+        [UIView animateWithDuration:duration delay:0 usingSpringWithDamping:damping initialSpringVelocity:velocity options:0 animations:^{
+            
+            line.frame = lineFrame;
+            line.center = center;
+            [button setTitleColor:buttonTextColor forState:UIControlStateNormal];
+            
+        } completion:^(BOOL finished) {
+            if (_selectedDidChange && ([self.buttons indexOfObject:button] == (self.buttons.count - 1))) {
+                _selectedDidChange(@{@"selected" : [NSNumber numberWithInteger:self.selectedItem], @"finished" : [NSNumber numberWithBool:finished]});
+            }
+        }];
+    }
 }
 
 
 -(void)setSelectedItem:(NSInteger)selectedItem {
-        if (self.buttons.count > selectedItem && selectedItem >= 0) {
-            UIButton *selectedButton = self.buttons[selectedItem];
-            [self buttonSelected:selectedButton];
-        }
+    if (self.buttons.count > selectedItem && selectedItem >= 0) {
+        UIButton *selectedButton = self.buttons[selectedItem];
+        [self buttonSelected:selectedButton animated:NO];
+    }
 }
+
 
 @end
 
