@@ -41,6 +41,7 @@ Now use it in your jsx inside your `View`:
 		fontWeight: 'bold', // bold, italic, regular (default)
 		segmentBackgroundColor: 'transparent',
 		segmentTextColor: '#7a92a5',
+		segmentHighlightTextColor: '#7a92a599'
 		selectedLineColor: '#00adf5',
 		selectedLineAlign: 'bottom', // top/bottom/text
 		selectedLineMode: 'text', // full/text
@@ -50,7 +51,8 @@ Now use it in your jsx inside your `View`:
 	}}
 	animation={{
 		duration: 0.7,
-		damping: 0.5
+		damping: 0.5,
+		animationType: 'middle-line'
 	}}
 	onSelectedWillChange={(event)=> {
 	}}
