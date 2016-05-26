@@ -476,6 +476,11 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedAnimationType, (@{
         UIButton *selectedButton = self.buttons[selectedItem];
         [self buttonSelected:selectedButton animated:NO];
     }
+    else {
+        // should be called only if the segmentedStrings (JS: textValues) array
+        // havn't been set yet, to avoid missing setSelected
+        _selectedItem = selectedItem;
+    }
 }
 
 
