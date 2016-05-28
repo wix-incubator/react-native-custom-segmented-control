@@ -3,7 +3,7 @@
  * https://github.com/facebook/react-native
  * @flow
  */
-
+import _ from 'lodash';
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -15,10 +15,27 @@ import {
 } from 'react-native';
 
 import {CustomSegmentedControl} from 'react-native-custom-segmented-control'
-//var {height, width} = Dimensions.get('window');
+
+
 
 
 class example extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      segmentedText: [
+        ['ORDERS','PRODUCTS' ],
+        ['ORDERS','HOTELS', 'OPTIONS'],
+        ['TOP FREE','TOP PAID', 'TOP GROSSING'],
+        ['ORDERS','HOTELS', 'OPTIONS','TOP FREE','TOP PAID'],
+        ['ORDERS','HOTELS', 'OPTIONS','TOP FREE','TOP PAID']
+      ],
+      selectedArray: [0,2,1,4,3]
+    };
+  }
+
+
   render() {
     return (
       <View style={styles.container}>
@@ -28,8 +45,8 @@ class example extends Component {
                                           backgroundColor: 'white',
                                           marginVertical: 8
                                         }}
-                                  textValues={['ORDERS','PRODUCTS' ]}
-                                  selected={0}
+                                  textValues={this.state.segmentedText[0]}
+                                  selected={this.state.selectedArray[0]}
                                   segmentedStyle={{
                                                    selectedLineHeight: 2,
                                                    fontSize:17,
@@ -44,8 +61,10 @@ class example extends Component {
                                                    segmentFontFamily: 'system-font-bold'
                                                  }}
                                   animation={{
-                                              duration: 0.7,
-                                              damping: 0.5
+                                              duration: 0.4,
+                                              damping: 0.5,
+                                              animationType: 'middle-line',
+                                              initialDampingVelocity: 1
                                               }}
                                   onSelectedWillChange={(event)=> {
                                   }}
@@ -54,61 +73,67 @@ class example extends Component {
 
           />
 
-          <CustomSegmentedControl style={{flex: 1, backgroundColor: '#2C82C9'}}
-                                  selected={2}
+          <CustomSegmentedControl style={{flex: 1, backgroundColor: 'transparent'}}
+                                  selected={this.state.selectedArray[1]}
                                   segmentedStyle={{
-                                         lineSelectedHeight: 2,
+                                         selectedLineHeight: 2,
                                          fontSize:20,
-                                         segmentBackgroundColor: 'transparent',
-                                         segmentTextColor: 'black',
+                                         segmentBackgroundColor: '#7d5642',
+                                         segmentTextColor: '#cccccc',
+                                         selectedLineColor: '#6d8b4b',
                                          segmentFontFamily: 'Copperplate',
-                                         selectedLineColor: '#8A2D3C',
                                          }}
                                   animation={{
                                               duration: 0.7,
-                                              damping: 0.2
+                                              damping: 0.4,
                                               }}
-                                  textValues={['ORDERS','HOTELS', 'OPTIONS']}
+                                  textValues={this.state.segmentedText[1]}
           />
 
           <CustomSegmentedControl style={{flex: 1,
-                                          backgroundColor: '#83D6DE',
-                                          borderRadius: 6,
+                                          backgroundColor: '#333333',
+                                          //borderRadius: 6,
                                           marginVertical: 8,
-                                          marginHorizontal: 4
+                                          //marginHorizontal: 4
                                          }}
-                                  selected={1}
+                                  selected={this.state.selectedArray[2]}
                                   segmentedStyle={{
-                                                 lineSelectedHeight: 1,
+                                                 selectedLineHeight: 3,
                                                  fontSize:15,
                                                  segmentBackgroundColor: 'transparent',
-                                                 segmentTextColor: 'blue',
-                                                 selectedTextColor: 'white',
+                                                 segmentTextColor: '#75c776',
+                                                 selectedTextColor: '#4f9f5b',
+                                                 selectedLineColor: '#acefac',
                                                  segmentFontFamily: 'Menlo',
-                                                 selectedLineColor: 'red'
+                                                 selectedLineAlign: 'bottom',
+
                                                  }}
                                   animation={{
-                                              duration: 0.3,
+                                              duration: 0.5,
                                               damping: 0.8
                                               }}
-                                  textValues={['TOP FREE','TOP PAID', 'TOP GROSSING']}
+                                  textValues={this.state.segmentedText[2]}
           />
 
           <CustomSegmentedControl style={{ flex: 1,backgroundColor: '#3C3741', marginVertical: 8}}
                                   segmentedStyle={{
-                                                  lineSelectedHeight: 3,
-                                                  fontSize:12,
-                                                  segmentBackgroundColor: 'transparent',
-                                                  segmentTextColor: '#E0E4CC',
+                                                  selectedLineHeight: 5,
+                                                  fontSize:14,
+                                                  segmentBackgroundColor: '#cfc2cf',
+                                                  segmentTextColor: '#ffffff',
+                                                  selectedLineColor: '#e06ea2',
+                                                  selectedLineAlign: 'top',
                                                   segmentFontFamily: 'Verdana',
-                                                  selectedLineColor: '#EB9532',
-                                                 selectedLineAlign: 'top'
+                                                  selectedLineMode: 'full'
+
                                                  }}
+                                  selected={this.state.selectedArray[3]}
                                   animation={{
-                                              duration: 0.3,
-                                              damping: 0.4
+                                              duration: 0.4,
+                                              damping: 0.4,
+                                              dampingInitialVelocity:0
                                               }}
-                                  textValues={['ORDERS','HOTELS', 'OPTIONS','TOP FREE','TOP PAID']}
+                                  textValues={this.state.segmentedText[3]}
           />
 
           <CustomSegmentedControl style={{ flex: 1,
@@ -117,7 +142,7 @@ class example extends Component {
                                            marginHorizontal: 4,
                                         }}
                                   segmentedStyle={{
-                                                  lineSelectedHeight: 3,
+                                                  selectedLineHeight: 7,
                                                   fontSize:12,
                                                   segmentBackgroundColor: 'transparent',
                                                   segmentTextColor: '#60646D',
@@ -125,11 +150,13 @@ class example extends Component {
                                                   selectedLineAlign: 'top',
                                                   selectedLineMode: 'full'
                                                  }}
+                                  selected={this.state.selectedArray[4]}
                                   animation={{
-                                              duration: 0.5,
-                                              damping: 0.6
+                                              duration: 0.9,
+                                              damping: 0.4,
+                                              animationType: 'middle-line'
                                               }}
-                                  textValues={['ORDERS','HOTELS', 'OPTIONS','TOP FREE','TOP PAID']}
+                                  textValues={this.state.segmentedText[4]}
           />
 
         </View>

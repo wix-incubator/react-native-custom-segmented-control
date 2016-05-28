@@ -9,35 +9,37 @@
 #import "CustomSegmentedControlManager.h"
 #import "UIView+React.h"
 
-#define LINE_SELECTED_MARGIN_TOP                2
+#define LINE_SELECTED_MARGIN_TOP                        2
 
-#define DEFAULT_SELECTED_LINE_PADDING_WIDTH     4
-#define DEFAULT_SELECTED_LINE_HEIGHT            2
-#define DEFAULT_ANIMATION_DURATION              0.2
-#define DEFAULT_ANIMATION_DAMPING               0
-#define DEFAULT_FONT_SIZE                       14
-#define DEFAULT_LINE_COLOR                      [UIColor blackColor]
-#define DEFAULT_SEGMENTED_HIGHLIGHT_COLOR       [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5]
+#define DEFAULT_SELECTED_LINE_PADDING_WIDTH             4
+#define DEFAULT_SELECTED_LINE_HEIGHT                    2
+#define DEFAULT_ANIMATION_DURATION                      0.2
+#define DEFAULT_ANIMATION_DAMPING                       0
+#define DEFAULT_ANIMATION_DAMPING_INITIAL_VELOCITY      0
+#define DEFAULT_FONT_SIZE                               14
+#define DEFAULT_LINE_COLOR                              [UIColor blackColor]
+#define DEFAULT_SEGMENTED_HIGHLIGHT_COLOR               [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5]
 
-#define DEFAULT_SYSTEM_FONT                     @"system-font"
-#define DEFAULT_SYSTEM_FONT_BOLD                @"system-font-bold"
+#define DEFAULT_SYSTEM_FONT                             @"system-font"
+#define DEFAULT_SYSTEM_FONT_BOLD                        @"system-font-bold"
 
-#define STYLE_SELECTED_LINE_HEIGHT              @"selectedLineHeight"
-#define STYLE_SELETCED_LINE_PADDING_WIDTH       @"selectedLinePaddingWidth"
-#define STYLE_FONT_SIZE                         @"fontSize"
-#define STYLE_SEGMENT_BACKGROUND_COLOR          @"segmentBackgroundColor"
-#define STYLE_SEGMENT_TEXT_COLOR                @"segmentTextColor"
-#define STYLE_SEGMENT_HIGHLIGHT_TEXT_COLOR      @"segmentHighlightTextColor"
-#define STYLE_SELECTED_TEXT_COLOR               @"selectedTextColor"
-#define STYLE_SEGMENT_FONT_FAMILY               @"segmentFontFamily"
-#define STYLE_SELECTED_LINE_COLOR               @"selectedLineColor"
-#define STYLE_SELECTED_LINE_ALIGN               @"alignSelectedLine"
-#define STYLE_SELECTED_LINE_MODE                @"selectedLineMode"
-#define STYLE_SELECTED_LINE_ALIGN               @"selectedLineAlign"
+#define STYLE_SELECTED_LINE_HEIGHT                      @"selectedLineHeight"
+#define STYLE_SELETCED_LINE_PADDING_WIDTH               @"selectedLinePaddingWidth"
+#define STYLE_FONT_SIZE                                 @"fontSize"
+#define STYLE_SEGMENT_BACKGROUND_COLOR                  @"segmentBackgroundColor"
+#define STYLE_SEGMENT_TEXT_COLOR                        @"segmentTextColor"
+#define STYLE_SEGMENT_HIGHLIGHT_TEXT_COLOR              @"segmentHighlightTextColor"
+#define STYLE_SELECTED_TEXT_COLOR                       @"selectedTextColor"
+#define STYLE_SEGMENT_FONT_FAMILY                       @"segmentFontFamily"
+#define STYLE_SELECTED_LINE_COLOR                       @"selectedLineColor"
+#define STYLE_SELECTED_LINE_ALIGN                       @"alignSelectedLine"
+#define STYLE_SELECTED_LINE_MODE                        @"selectedLineMode"
+#define STYLE_SELECTED_LINE_ALIGN                       @"selectedLineAlign"
 
-#define ANIMATION_DAMPING                       @"damping"
-#define ANIMATION_DURATION                      @"duration"
-#define ANIMATION_TYPE                          @"animationType"
+#define ANIMATION_DAMPING                               @"damping"
+#define ANIMATION_DURATION                              @"duration"
+#define ANIMATION_TYPE                                  @"animationType"
+#define ANIMATION_DAMPING_INITIAL_VELOCITY              @"dampingInitialVelocity"
 
 @implementation RCTConvert(CustomSegmentedSelectedLineAlign)
 
@@ -98,6 +100,7 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedAnimationType, (@{
 // animation props
 @property (nonatomic) CGFloat animationDuration;
 @property (nonatomic) CGFloat animationDamping;
+@property (nonatomic) CGFloat initialDampingVelocity;
 
 // callbacks props
 @property (nonatomic, copy) RCTDirectEventBlock selectedWillChange;
@@ -198,6 +201,12 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedAnimationType, (@{
     id animationType = self.animation[ANIMATION_TYPE];
     if (animationType) {
         self.customAnimationType = [RCTConvert CustomSegmentedSelectedAnimationType:animationType];
+    }
+    
+    // ANIMATION_DAMPING_INITIAL_VELOCITY
+    id animationInitialDampingVelocity = self.animation[ANIMATION_DAMPING_INITIAL_VELOCITY];
+    if (animationInitialDampingVelocity) {
+        self.initialDampingVelocity = [RCTConvert CGFloat:animationInitialDampingVelocity];
     }
 }
 
@@ -385,7 +394,7 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedAnimationType, (@{
                                          button:button
                                   buttonPressed:buttonPressed
                                 buttonTextColor:buttonTextColor
-                          initialSpringVelocity:0];
+                          initialSpringVelocity:self.initialDampingVelocity];
                 }
                     break;
                     
@@ -405,7 +414,7 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedAnimationType, (@{
                                         damping:damping
                                          button:button buttonPressed:buttonPressed
                                 buttonTextColor:buttonTextColor
-                          initialSpringVelocity:0];
+                          initialSpringVelocity:self.initialDampingVelocity];
                     
                 }
                     break;
@@ -420,7 +429,7 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedAnimationType, (@{
                                          button:button
                                   buttonPressed:buttonPressed
                                 buttonTextColor:buttonTextColor
-                          initialSpringVelocity:1.0];
+                          initialSpringVelocity:self.initialDampingVelocity];
                 }
                     break;
             }

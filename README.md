@@ -1,6 +1,35 @@
 # react-native-custom-segmented-control
 Native UI component for Segmented Control with custom style
 
+`animationType: 'middle-line'`
+`selectedLineAlign: 'text'`
+`selectedLineMode: 'full'`
+![Screenshots](images/my_segmented1.gif)
+
+`animationType: 'middle-line'`
+`selectedLineAlign: 'text'`
+`selectedLineMode: 'text'`
+![Screenshots](images/my_segmented2.gif)
+
+`animationType: 'middle-line'`
+`selectedLineAlign: 'bottom'`
+`selectedLineMode: 'text'`
+![Screenshots](images/my_segmented3.gif)
+
+`animationType: 'middle-line'`
+`selectedLineAlign: 'top'`
+`selectedLineMode: 'full'`
+![Screenshots](images/my_segmented4.gif)
+
+`animationType: 'middle-line'`
+`selectedLineAlign: 'top'`
+`selectedLineMode: 'full'`
+![Screenshots](images/my_segmented5.gif)
+
+`animationType: 'open-and-close'`
+`selectedLineAlign: 'text'`
+`selectedLineMode: 'text'`
+![Screenshots](images/my_segmented6.gif)
 
 ## Installation
 
@@ -86,7 +115,7 @@ segmentFontFamily | [Font/`'system-font-bold'`/`'system-font'`] The segmented co
 selectedLineColor | [Color] The selected line color. Default is 'black'
 selectedLineAlign | [`'top'`/`'bottom'`/`'text'`] The selected line vertical alignment. Defualt is `'text'`
 selectedLineMode | [`'full'`/`'text'`] The selected line mode. For determine if the line will be text width of full button width. Default is `'text'`
-selectedLinePaddingWidth | [float] The selected line width padding
+selectedLinePaddingWidth | [float] The selected line width padding. Default is 2
 
 
 
@@ -97,3 +126,4 @@ Attribute | Description
 duration | [float] The animation duration. Default is 0.2 sec
 damping | [float] The damping ratio for the spring animation. Default is 0 (no damping)
 animationType | [`'default'`, `'middle-line'`, `'close-and-open'`] The transition animation type. Default is `'default'`
+initialDampingVelocity | (float) The initial damping velocity. Default is 0
