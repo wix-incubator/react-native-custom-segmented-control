@@ -6,10 +6,10 @@ Native UI component for Segmented Control with custom style
 `selectedLineMode: 'full'`
 ![Screenshots](images/my_segmented1.gif)
 
-`animationType: 'middle-line'`
+`animationType: 'open-and-close'`
 `selectedLineAlign: 'text'`
 `selectedLineMode: 'text'`
-![Screenshots](images/my_segmented2.gif)
+![Screenshots](images/my_segmented6.gif)
 
 `animationType: 'middle-line'`
 `selectedLineAlign: 'bottom'`
@@ -26,10 +26,10 @@ Native UI component for Segmented Control with custom style
 `selectedLineMode: 'full'`
 ![Screenshots](images/my_segmented5.gif)
 
-`animationType: 'open-and-close'`
+`animationType: 'middle-line'`
 `selectedLineAlign: 'text'`
 `selectedLineMode: 'text'`
-![Screenshots](images/my_segmented6.gif)
+![Screenshots](images/my_segmented2.gif)
 
 ## Installation
 
