@@ -59,8 +59,8 @@ Now use it in your jsx inside your `View`:
 <CustomSegmentedControl 
 	style={{
 		flex:1,
-		backgroundColor: 'white'	
-		marginVertical: 
+		backgroundColor: 'white',	
+		marginVertical: 8
 	}}
 	textValues={['ORDERS','PRODUCTS' ]}
 	selected={0}
@@ -81,7 +81,8 @@ Now use it in your jsx inside your `View`:
 	animation={{
 		duration: 0.7,
 		damping: 0.5,
-		animationType: 'middle-line'
+		animationType: 'middle-line',
+		initialDampingVelocity: 0.4
 	}}
 	onSelectedWillChange={(event)=> {
 	}}
