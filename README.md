@@ -36,7 +36,7 @@ Native UI component for Segmented Control with custom style
 - Install using `npm`:
 
 	```
-	npm i react-native-custom-segmented-control
+	npm install react-native-custom-segmented-control --save
 	```
 
 - Locate the module lib folder in your node modules:
