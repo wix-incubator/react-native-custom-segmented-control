@@ -6,8 +6,8 @@
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
-    "react": "0.14.5",
-    "react-native": "0.25.1",
+    "react": "15.3.2",
+    "react-native": "^0.38",
     "react-native-custom-segmented-control": "latest"
   }
 }
