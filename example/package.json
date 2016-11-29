@@ -8,6 +8,6 @@
   "dependencies": {
     "react": "15.3.2",
     "react-native": "^0.38",
-    "react-native-custom-segmented-control": "latest"
+    "react-native-custom-segmented-control": "file:.."
   }
 }
