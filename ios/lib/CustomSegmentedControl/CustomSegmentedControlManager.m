@@ -65,7 +65,8 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedLineMode, (@{
 RCT_ENUM_CONVERTER(CustomSegmentedSelectedAnimationType, (@{
                                                             @"default": @(CustomSegmentedSelectedAnimationTypeDefault),
                                                             @"middle-line": @(CustomSegmentedSelectedAnimationTypeMiddleLine),
-                                                            @"close-and-open": @(CustomSegmentedSelectedAnimationTypeCloseAndAndOpen)
+                                                            @"close-and-open": @(CustomSegmentedSelectedAnimationTypeCloseAndAndOpen),
+                                                            @"relative-open": @(CustomSegmentedSelectedRelativeOpen)
                                                             }), CustomSegmentedSelectedAnimationTypeDefault, integerValue)
 
 @end
@@ -419,6 +420,33 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedAnimationType, (@{
                 }
                     break;
                     
+                case CustomSegmentedSelectedRelativeOpen:
+                {
+                    if (button == buttonPressed) {
+                        CGRect tmpFrame = lineFrame;
+                        tmpFrame.size.width *= 0.2;
+                        if (self.selectedItem > previousSelectedItem) {
+                            
+                            tmpFrame.origin.x = (buttonPressed.frame.size.width - lineFrame.size.width)/2 + buttonPressed.frame.origin.x;
+                            
+                        }
+                        else {
+                            tmpFrame.origin.x = buttonPressed.frame.origin.x + buttonPressed.bounds.size.width - tmpFrame.size.width - (buttonPressed.bounds.size.width - lineFrame.size.width)/2;
+                        }
+                        line.frame = tmpFrame;
+                    }
+                    
+                    
+                    [self doRelativeOpenAnimation:line
+                                     lineNewFrame:lineFrame
+                                         duration:duration
+                                          damping:0
+                                           button:button buttonPressed:buttonPressed
+                                  buttonTextColor:buttonTextColor
+                            initialSpringVelocity:self.initialDampingVelocity];
+                }
+                    break;
+                    
                 default:
                 {
                     
@@ -469,6 +497,37 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedAnimationType, (@{
             
             line.frame = lineFrame;
             line.center = center;
+            [button setTitleColor:buttonTextColor forState:UIControlStateNormal];
+            
+        } completion:^(BOOL finished) {
+            if (_selectedDidChange && ([self.buttons indexOfObject:button] == (self.buttons.count - 1))) {
+                _selectedDidChange(@{@"selected" : [NSNumber numberWithInteger:self.selectedItem], @"finished" : [NSNumber numberWithBool:finished]});
+            }
+        }];
+    }
+}
+
+-(void)doRelativeOpenAnimation:(UIView*)line
+                  lineNewFrame:(CGRect)lineFrame
+                      duration:(CGFloat)duration
+                       damping:(CGFloat)damping
+                        button:(UIButton*)button
+                 buttonPressed:(UIButton*)buttonPressed
+               buttonTextColor:(UIColor*)buttonTextColor
+         initialSpringVelocity:(CGFloat)velocity {
+    
+    if (duration == 0.0) {
+        line.frame = lineFrame;
+        [button setTitleColor:buttonTextColor forState:UIControlStateNormal];
+        if (_selectedDidChange && ([self.buttons indexOfObject:button] == (self.buttons.count - 1))) {
+            _selectedDidChange(@{@"selected" : [NSNumber numberWithInteger:self.selectedItem], @"finished" : [NSNumber numberWithBool:YES]});
+        }
+    }
+    else {
+        
+        [UIView animateWithDuration:duration delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionTransitionNone animations:^{
+            
+            line.frame = lineFrame;
             [button setTitleColor:buttonTextColor forState:UIControlStateNormal];
             
         } completion:^(BOOL finished) {

@@ -26,7 +26,8 @@ typedef NS_ENUM(NSInteger, CustomSegmentedSelectedLineMode) {
 typedef NS_ENUM(NSInteger, CustomSegmentedSelectedAnimationType) {
     CustomSegmentedSelectedAnimationTypeDefault,
     CustomSegmentedSelectedAnimationTypeMiddleLine,
-    CustomSegmentedSelectedAnimationTypeCloseAndAndOpen
+    CustomSegmentedSelectedAnimationTypeCloseAndAndOpen,
+    CustomSegmentedSelectedRelativeOpen
 };
 
 @interface RCTConvert(CustomSegmentedSelectedLineAlign)
