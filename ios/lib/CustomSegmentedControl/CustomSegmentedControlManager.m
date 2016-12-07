@@ -378,7 +378,9 @@ RCT_ENUM_CONVERTER(CustomSegmentedSelectedAnimationType, (@{
         
         if (!animated) {
             line.frame = lineFrame;
-            line.center = center;
+            if (self.customAnimationType != CustomSegmentedSelectedRelativeOpen) {
+                line.center = center;
+            }
             [button setTitleColor:buttonTextColor forState:UIControlStateNormal];
         }
         else {
