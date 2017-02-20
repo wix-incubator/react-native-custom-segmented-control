@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "RCTViewManager.h"
-#import "RCTConvert.h"
+#import <React/RCTViewManager.h>
+#import <React/RCTConvert.h>
 
 
 
