@@ -7,8 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+
+#if __has_include(<React/RCTViewManager.h>)
+#import <React/RCTViewManager.h>
+#import <React/RCTConvert.h>
+#else
 #import "RCTViewManager.h"
 #import "RCTConvert.h"
+#endif
 
 
 
