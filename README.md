@@ -91,7 +91,7 @@ Now use it in your jsx inside your `View`:
 />
 ```
 
-##Properties
+## Properties
 
 Attribute | Description
 -------- | -----------
@@ -103,7 +103,7 @@ animation | [Object] see [Animation Properties](README.md#animation-properties)
 segmentedStyle | [Object] see [Segmented Style Properties](README.md#segmented-style-properties)
 
                                                  
-##Segmented Style Properties
+## Segmented Style Properties
 Attribute | Description
 --------- | -----------
 selectedLineHeight | [float] The selected line height. Default is 2
@@ -120,7 +120,7 @@ selectedLinePaddingWidth | [float] The selected line width padding. Default is 2
 
 
 
-##Animation Properties
+## Animation Properties
  
 Attribute | Description
 --------- | -----------
