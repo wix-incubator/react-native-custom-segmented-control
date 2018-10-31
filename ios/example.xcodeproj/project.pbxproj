@@ -20,7 +20,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
-		36A002541EAE21DF002D9978 /* libCustomSegmentedControl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 36A002341EAE21D6002D9978 /* libCustomSegmentedControl.a */; };
+		26D2917B2189FC5C009EFA17 /* libCustomSegmentedControl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 26D291582189FC53009EFA17 /* libCustomSegmentedControl.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 /* End PBXBuildFile section */
 
@@ -137,9 +137,23 @@
 			remoteGlobalIDString = 9936F32F1F5F2E5B0010BF04;
 			remoteInfo = "privatedata-tvOS";
 		};
-		36A002331EAE21D6002D9978 /* PBXContainerItemProxy */ = {
+		26D291212189FB37009EFA17 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 36A0022F1EAE21D6002D9978 /* CustomSegmentedControl.xcodeproj */;
+			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EBF21BDC1FC498900052F4D5;
+			remoteInfo = jsinspector;
+		};
+		26D291232189FB37009EFA17 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EBF21BFA1FC4989A0052F4D5;
+			remoteInfo = "jsinspector-tvOS";
+		};
+		26D291572189FC53009EFA17 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 26D291532189FC53009EFA17 /* CustomSegmentedControl.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 26751C0A1CE8BD5C0006725F;
 			remoteInfo = CustomSegmentedControl;
@@ -268,7 +282,7 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = example/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = example/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
-		36A0022F1EAE21D6002D9978 /* CustomSegmentedControl.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CustomSegmentedControl.xcodeproj; path = ../../ios/lib/CustomSegmentedControl.xcodeproj; sourceTree = "<group>"; };
+		26D291532189FC53009EFA17 /* CustomSegmentedControl.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CustomSegmentedControl.xcodeproj; path = lib/CustomSegmentedControl.xcodeproj; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -278,7 +292,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				36A002541EAE21DF002D9978 /* libCustomSegmentedControl.a in Frameworks */,
+				26D2917B2189FC5C009EFA17 /* libCustomSegmentedControl.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
@@ -382,6 +396,8 @@
 				36A002621EAE2363002D9978 /* libcxxreact.a */,
 				36A002641EAE2363002D9978 /* libjschelpers.a */,
 				36A002661EAE2363002D9978 /* libjschelpers.a */,
+				26D291222189FB37009EFA17 /* libjsinspector.a */,
+				26D291242189FB37009EFA17 /* libjsinspector-tvOS.a */,
 				264AD5DB2046CF5000B48D9B /* libthird-party.a */,
 				264AD5DD2046CF5000B48D9B /* libthird-party.a */,
 				264AD5DF2046CF5000B48D9B /* libdouble-conversion.a */,
@@ -392,12 +408,19 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		36A002301EAE21D6002D9978 /* Products */ = {
+		26D291542189FC53009EFA17 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				36A002341EAE21D6002D9978 /* libCustomSegmentedControl.a */,
+				26D291582189FC53009EFA17 /* libCustomSegmentedControl.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		26D2917A2189FC5C009EFA17 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		78C398B11ACF4ADC00677621 /* Products */ = {
@@ -412,7 +435,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				36A0022F1EAE21D6002D9978 /* CustomSegmentedControl.xcodeproj */,
+				26D291532189FC53009EFA17 /* CustomSegmentedControl.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
 				00C302B51ABCB90400DB3ED1 /* RCTGeolocation.xcodeproj */,
@@ -442,6 +465,7 @@
 				13B07FAE1A68108700A75B9A /* example */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
+				26D2917A2189FC5C009EFA17 /* Frameworks */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -498,8 +522,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 36A002301EAE21D6002D9978 /* Products */;
-					ProjectRef = 36A0022F1EAE21D6002D9978 /* CustomSegmentedControl.xcodeproj */;
+					ProductGroup = 26D291542189FC53009EFA17 /* Products */;
+					ProjectRef = 26D291532189FC53009EFA17 /* CustomSegmentedControl.xcodeproj */;
 				},
 				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
@@ -662,11 +686,25 @@
 			remoteRef = 264AD5E42046CF5000B48D9B /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		36A002341EAE21D6002D9978 /* libCustomSegmentedControl.a */ = {
+		26D291222189FB37009EFA17 /* libjsinspector.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libjsinspector.a;
+			remoteRef = 26D291212189FB37009EFA17 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		26D291242189FB37009EFA17 /* libjsinspector-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libjsinspector-tvOS.a";
+			remoteRef = 26D291232189FB37009EFA17 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		26D291582189FC53009EFA17 /* libCustomSegmentedControl.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libCustomSegmentedControl.a;
-			remoteRef = 36A002331EAE21D6002D9978 /* PBXContainerItemProxy */;
+			remoteRef = 26D291572189FC53009EFA17 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		36A0023A1EAE21D6002D9978 /* libRCTImage-tvOS.a */ = {

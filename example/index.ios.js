@@ -1,22 +1,11 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-import _ from 'lodash';
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   AppRegistry,
   StyleSheet,
-  Text,
   View,
-  Dimensions,
-  UIManager
 } from 'react-native';
 
-import {CustomSegmentedControl} from 'react-native-custom-segmented-control'
-
-
+import {CustomSegmentedControl} from '../src/index';
 
 
 class example extends Component {

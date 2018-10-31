@@ -11,14 +11,18 @@
   "description": "Native iOS Custom segmented control for React Native",
   "nativePackage": true,
   "homepage": "https://github.com/wix/react-native-custom-segmented-control",
-  "main": "index.js",
+  "main": "src/index.js",
   "author": "Ran Greenberg <gran33@gmail.com>",
   "license": "MIT",
-  "peerDependencies": {
-    "react": ">=0.14.5",
-    "react-native": ">=0.25.1"
+  "scripts": {
+    "start": "watchman watch-del-all && node node_modules/react-native/local-cli/cli.js start",
+    "xcode": "open ios/example.xcodeproj"
   },
   "dependencies": {
     "lodash": "^4.0.0"
+  },
+  "devDependencies": {
+    "react": "16.6.0-alpha.8af6728",
+    "react-native": "0.57.4"
   }
 }

@@ -1,6 +1,3 @@
-/**
- * Created by rang on 15/05/2016.
- */
 import * as _ from 'lodash';
 import React, {Component} from 'react';
 import {
@@ -10,7 +7,7 @@ import {
 
 const NativeCustomSegmentedControl = requireNativeComponent('CustomSegmentedControl', null);
 
-export default class CustomSegmentedControl extends React.Component {
+export default class CustomSegmentedControl extends Component {
 	render() {
 		const transformedProps = {...this.props};
 		_.update(transformedProps, 'segmentedStyle.segmentBackgroundColor', (c) => processColor(c));
