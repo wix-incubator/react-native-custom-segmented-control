@@ -16,13 +16,17 @@
   "license": "MIT",
   "scripts": {
     "start": "watchman watch-del-all && node node_modules/react-native/local-cli/cli.js start",
-    "xcode": "open ios/example.xcodeproj"
+    "xcode": "open ios/example.xcodeproj",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "dependencies": {
-    "lodash": "^4.0.0"
+    "lodash": "^4.0.0",
+    "snyk": "^1.192.3"
   },
   "devDependencies": {
     "react": "16.6.0-alpha.8af6728",
     "react-native": "0.57.4"
-  }
+  },
+  "snyk": true
 }
